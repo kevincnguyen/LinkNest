@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
         required: [true, 'email required'],
         unique: true
     }, 
-    password: {
+    passwordHash: {
         type: String,
         minLength: [8, 'password must at least be 8 characters'],
         required: [true, 'password required']
@@ -27,13 +27,16 @@ const userSchema = mongoose.Schema({
         {
             url: {
                 type: String,
-                required: true
+                required: [true, 'url required']
             }, 
             position: {
                 type: Number, 
-                required: true
+                required: [true, 'position required']
             },
-            description: String
+            description: {
+                type: String,
+                required: [true, 'description required']
+            }
         }
     ]
 })
@@ -45,7 +48,7 @@ userSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
-      delete returnedObject.password;
+      delete returnedObject.passwordHash;
     }
 })
 
