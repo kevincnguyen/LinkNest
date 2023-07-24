@@ -1,0 +1,29 @@
+POST http://localhost:3001/api/signup
+content-type: application/json 
+
+{
+    "name": "John Smith",
+    "username": "jsmith",
+    "email": "johnsmith@gmail.com", 
+    "password": "password"
+}
+
+###
+POST http://localhost:3001/api/signup
+content-type: application/json 
+
+{
+    "username": "hello",
+    "email": "hello@gmail.com", 
+    "password": "password"
+}
+
+###
+POST http://localhost:3001/api/signup
+content-type: application/json 
+
+{
+    "name": "tester",
+    "username": "test",
+    "email": "test@gmail.com"
+}

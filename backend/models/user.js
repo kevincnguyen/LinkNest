@@ -9,14 +9,14 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: [true, 'username required'],
-        unique: true
+        unique: [true, 'username must be unique'] 
     },
     email: {
         type: String,
         required: [true, 'email required'],
-        unique: true
+        unique: [true, 'email must be unique'] 
     }, 
-    passwordHash: {
+    password: {
         type: String,
         minLength: [8, 'password must at least be 8 characters'],
         required: [true, 'password required']
@@ -25,18 +25,8 @@ const userSchema = mongoose.Schema({
     profilepic: String,
     links: [
         {
-            url: {
-                type: String,
-                required: [true, 'url required']
-            }, 
-            position: {
-                type: Number, 
-                required: [true, 'position required']
-            },
-            description: {
-                type: String,
-                required: [true, 'description required']
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Link'
         }
     ]
 })
@@ -48,7 +38,7 @@ userSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
-      delete returnedObject.passwordHash;
+      delete returnedObject.password
     }
 })
 

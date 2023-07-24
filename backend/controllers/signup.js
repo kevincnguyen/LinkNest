@@ -1,9 +1,15 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const signupRouter = require('express').Router()
 const User = require('../models/user')
 
 signupRouter.post('/', async (req, res) => {
     const { name, username, email, password } = req.body
+
+    if (!password) {
+        return res.status(400).json({
+            error: 'password required'
+        });
+    }
   
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
@@ -12,7 +18,7 @@ signupRouter.post('/', async (req, res) => {
         name,
         username,
         email,
-        passwordHash
+        password: passwordHash
     })
   
     const savedUser = await user.save()

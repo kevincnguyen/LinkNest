@@ -12,15 +12,17 @@ const requestLogger = (req, res, next) => {
 const errorHandler = (err, req, res, next) => {
     logger.error(err.message)
   
-    if (err.name === 'CastError') {
-        return res.status(400).send({ error: 'malformatted id' })
-    } else if (err.name === 'MongoError' && err.code === 11000) {
-        return res.status(400).send({ error: 'username and/or email must be unique' })
-    }  else if (err.name ===  'JsonWebTokenError') {
+    if (err.name === 'ValidationError') {
+        return res.status(400).json({ error: err.message })
+    } else if (err.name === 'JsonWebTokenError') {
         return res.status(400).json({ error: err.message })
     } else if (err.name === 'TokenExpiredError') {
         return res.status(401).json({ error: 'token expired' })
     }
+
+    // else if (err.name === 'MongoError' && err.code === 11000) {
+    //     return res.status(400).send({ error: 'username and/or email must be unique' })
+    // }  
   
     next(err)
 }
@@ -29,7 +31,7 @@ const unknownEndpoint = (req, res) => {
     res.status(404).send({ error: 'unknown endpoint' })
 }
 
-const userExtractor = async (res, req, next) => {
+const userExtractor = async (req, res, next) => {
     const token = req.cookies.jwtToken
     if (token) {
         const decodedToken = jwt.verify(token, process.env.SECRET)
