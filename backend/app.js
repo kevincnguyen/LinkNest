@@ -30,8 +30,8 @@ mongoose.connect(config.MONGODB_URI)
         logger.error('error connecting to MongoDB:', err.message);
     })
 
-app.use('/api/users', middleware.userExtractor, usersRouter)
-app.use('/api/links', middleware.userExtractor, linksRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/links', linksRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/logout', logoutRouter)
 app.use('/api/signup', signupRouter)

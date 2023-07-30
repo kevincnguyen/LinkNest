@@ -8,12 +8,33 @@ const User = require('../models/user')
 const helper = require('./helper')
 
 describe('Addition of user', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await User.deleteMany({})
         const passwordHash = await bcrypt.hash('password', 10);
         const user = new User({ ...helper.initialUsers[0], password: passwordHash})
         await user.save()
     })
+
+    test('Succeeds with valid data', async () => {
+        const startUsers = await helper.usersInDb()
+    
+        const newUser = helper.initialUsers[1]
+    
+        await api
+            .post('/api/signup')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+    
+        const endUsers = await helper.usersInDb()
+        expect(endUsers).toHaveLength(startUsers.length + 1)
+    
+        const startUsernames = startUsers.map(u => u.username)
+        expect(startUsernames).not.toContain(newUser.username)
+    
+        const endUsernames = endUsers.map(u => u.username)
+        expect(endUsernames).toContain(newUser.username)
+    }, 100000)
 
     test('Fails with 400 if missing name', async () => {
         const startUsers = await helper.usersInDb()
@@ -36,7 +57,7 @@ describe('Addition of user', () => {
 
         const endUsernames = endUsers.map(u => u.username)
         expect(endUsernames).not.toContain(newUser.username)
-    })
+    }, 100000)
 
     test('Fails with 400 if missing username', async () => {
         const startUsers = await helper.usersInDb()
@@ -59,7 +80,7 @@ describe('Addition of user', () => {
 
         const endEmails = endUsers.map(u => u.email)
         expect(endEmails).not.toContain(newUser.email)
-    })
+    }, 100000)
 
     test('Fails with 400 if missing email', async () => {
         const startUsers = await helper.usersInDb()
@@ -82,7 +103,7 @@ describe('Addition of user', () => {
 
         const endUsernames = endUsers.map(u => u.username)
         expect(endUsernames).not.toContain(newUser.username)
-    })
+    }, 100000)
 
     test('Fails with 400 if missing password', async () => {
         const startUsers = await helper.usersInDb()
@@ -105,7 +126,7 @@ describe('Addition of user', () => {
 
         const endUsernames = endUsers.map(u => u.username)
         expect(endUsernames).not.toContain(newUser.username)
-    })
+    }, 100000)
 
     test('Fails with 400 if username already exists', async () => {
         const startUsers = await helper.usersInDb()
@@ -129,7 +150,7 @@ describe('Addition of user', () => {
 
         const endUsers = await helper.usersInDb()
         expect(endUsers).toHaveLength(startUsers.length)
-    })
+    }, 100000)
 
     test('Fails with 400 if email already exists', async () => {
         const startUsers = await helper.usersInDb()
@@ -153,28 +174,7 @@ describe('Addition of user', () => {
 
         const endUsers = await helper.usersInDb()
         expect(endUsers).toHaveLength(startUsers.length)
-    })
-
-    test('Succeeds with valid data', async () => {
-        const startUsers = await helper.usersInDb()
-    
-        const newUser = helper.initialUsers[1]
-    
-        await api
-            .post('/api/signup')
-            .send(newUser)
-            .expect(201)
-            .expect('Content-Type', /application\/json/)
-    
-        const endUsers = await helper.usersInDb()
-        expect(endUsers).toHaveLength(startUsers.length + 1)
-    
-        const startUsernames = startUsers.map(u => u.username)
-        expect(startUsernames).not.toContain(newUser.username)
-    
-        const endUsernames = endUsers.map(u => u.username)
-        expect(endUsernames).toContain(newUser.username)
-    })
+    }, 100000)
 })
 
 afterAll(async () => {

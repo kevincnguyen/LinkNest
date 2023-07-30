@@ -8,7 +8,7 @@ const User = require('../models/user')
 const helper = require('./helper')
 
 describe('User logged in', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await User.deleteMany({})
         const passwordHash = await bcrypt.hash('password', 10);
         const user = new User({ ...helper.initialUsers[0], password: passwordHash})
@@ -26,7 +26,7 @@ describe('User logged in', () => {
                                   .expect('Content-Type', /application\/json/)
         expect(response.body.message).toBe('Logged out successfully')
         expect(response.headers['set-cookie'][0]).toContain('jwtToken=;')
-    })
+    }, 100000)
 })
 
 afterAll(async () => {

@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const Link = require('../models/link')
 
 const initialUsers = [
     {
@@ -11,7 +12,20 @@ const initialUsers = [
         name: 'Billy Bob', 
         username: 'bbob',
         email: 'billybob@gmail.com', 
-        password: 'bobilly'
+        password: 'bobbybilly'
+    }
+]
+
+const initialLinks = [
+    {
+        url: 'www.instagram.com',
+        desc: 'Check out my Instagram',
+        position: 0
+    },
+    {
+        url: 'www.linkedin.com',
+        desc: 'Connect with me',
+        position: 0
     }
 ]
 
@@ -20,7 +34,14 @@ const usersInDb = async () => {
     return users.map(user => user.toJSON())
 }
 
+const linksInDb = async () => {
+    const links = await Link.find({})
+    return links.map(link => link.toJSON())
+}
+
 module.exports = {
     initialUsers,
-    usersInDb
+    initialLinks,
+    usersInDb,
+    linksInDb
 }

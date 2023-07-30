@@ -1,5 +1,6 @@
 const linksRouter = require('express').Router()
 const Link = require('../models/link')
+const middleware = require('../utils/middleware')
 
 // gets all links
 linksRouter.get('/', async (req, res) => {
@@ -9,18 +10,23 @@ linksRouter.get('/', async (req, res) => {
 })
 
 // adds link if logged in
-linksRouter.post('/', async (req, res) => {
+linksRouter.post('/', middleware.userExtractor, async (req, res) => {
     const user = req.user
 
+    if (!req.body.user) {
+        return res.status(400).json({ 
+            error: 'user required' 
+        })
+    }
+
     if (req.body.user.toString() !== user.id.toString()) {
-        return response.status(401).json({ 
-            error: 'links can only be added by its authorized user ' 
+        return res.status(401).json({ 
+            error: 'links can only be added by its authorized user' 
         })
     }
 
     const link = new Link ({ 
         ...req.body, 
-        position: req.body.position || user.links.length,
         user: user.id 
     })
 
@@ -35,19 +41,29 @@ linksRouter.post('/', async (req, res) => {
 
 
 // updates link if logged in
-linksRouter.put('/:id', async (req, res) => {
+linksRouter.put('/:id', middleware.userExtractor, async (req, res) => {
     const user = req.user
-    const requestLink = await Link.findById(request.params.id)
+    const requestLink = await Link.findById(req.params.id)
 
     if (requestLink.user.toString() !== user.id.toString()) {
-        return response.status(401).json({ 
-            error: 'this link can only be updated by its authorized user ' 
+        return res.status(401).json({ 
+            error: 'this link can only be updated by its authorized user' 
         })
+    }
+
+    if (!req.body.url) {
+        return res.status(400).json({  error: 'url required' })
+    } else if (!req.body.desc) {
+        return res.status(400).json({  error: 'description required' })
+    } else if (!req.body.position) {
+        return res.status(400).json({  error: 'position required' })
+    } else if (!req.body.user) {
+        return res.status(400).json({  error: 'user required' })
     }
 
     const link = { ...req.body }
 
-    const updatedLink = Link.findByIdAndUpdate(
+    const updatedLink = await Link.findByIdAndUpdate(
         req.params.id,
         link,
         { new: true, runValidators: true, context: 'query' }
@@ -57,22 +73,24 @@ linksRouter.put('/:id', async (req, res) => {
 })
 
 // delete link only if logged in
-linksRouter.delete('/:username/links/:id', async (req, res) => {
+linksRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
     const user = req.user
-    const requestLink = await Link.findById(request.params.id)
+    const requestLink = await Link.findById(req.params.id)
+
+    if (!requestLink) {
+        res.status(404).end()
+    }
 
     if (requestLink.user.toString() !== user.id.toString()) {
-        return response.status(401).json({ 
-            error: 'this link can only be deleted by its authorized user ' 
+        return res.status(401).json({ 
+            error: 'this link can only be deleted by its authorized user' 
         })
     }
 
-    const result = await Link.findByIdAndRemove(request.params.id)
+    const result = await Link.findByIdAndRemove(req.params.id)
     if (result) {
-        response.status(204).end()
-    } else {
-        response.status(404).end()
-    }
+        res.status(204).end()
+    } 
 })
 
 module.exports = linksRouter

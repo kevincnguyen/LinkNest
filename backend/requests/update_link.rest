@@ -1,0 +1,22 @@
+PUT http://localhost:3001/api/links/64c60a101ce9eaf0cd8dffe7
+content-type: application/json 
+Cookie: jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNtaXRoam9obiIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkwNzUzNDcwLCJleHAiOjE2OTA3NTcwNzB9.8POHfnleCiAaJ3lSiHsxODdQmnjKv9yw5I68TuH7TK8
+
+{
+    "url": "www.test.com",
+    "desc": "Test Link",
+    "position": 0,
+    "user": "64c59ae8b888d23d0ed1409e"
+}
+
+###
+PUT http://localhost:3001/api/links/64c60a101ce9eaf0cd8dffe7
+content-type: application/json 
+Cookie: jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJib2IiLCJpZCI6IjY0YzYwYTczMWNlOWVhZjBjZDhkZmZlYiIsImlhdCI6MTY5MDc1NDIyNCwiZXhwIjoxNjkwNzU3ODI0fQ.FHItEEZK3zUzXVy3tjTEq1ISoe1xsBssrt0QmKNzdws
+
+{
+    "url": "www.different.com",
+    "desc": "Different",
+    "position": 0,
+    "user": "64c59ae8b888d23d0ed1409e"
+}

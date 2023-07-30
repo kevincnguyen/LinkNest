@@ -36,9 +36,10 @@ describe('User already exists', () => {
                                   })
                                   .expect(200)
                                   .expect('Content-Type', /application\/json/)
+        const token = response.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1]
         expect(response.body.message).toBe('Login successful')
         expect(response.headers['set-cookie']).toBeDefined()
-        expect(response.headers['set-cookie'][0]).toContain('jwtToken=')
+        expect(response.headers['set-cookie'][0]).toContain(`jwtToken=${token}`)
     }, 100000)
     
     test('Login unsuccessful with incorrect credentials', async () => {

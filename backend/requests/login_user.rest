@@ -5,3 +5,21 @@ content-type: application/json
     "username": "jsmith",
     "password": "password"
 }
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json 
+
+{
+    "username": "smithjohn",
+    "password": "password"
+}
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json 
+
+{
+    "username": "bbob",
+    "password": "bobbybilly"
+}
