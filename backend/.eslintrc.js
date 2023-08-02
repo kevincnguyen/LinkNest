@@ -23,7 +23,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    'linebreak-style': ["error", "windows"],
+    'linebreak-style': ['error', 'windows'],
     'consistent-return': 'off',
     'no-underscore-dangle': 'off',
     'no-console': 'off',
