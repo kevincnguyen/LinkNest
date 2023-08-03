@@ -36,7 +36,10 @@ loginRouter.post('/', async (req, res) => {
     maxAge: 3600000,
   });
 
-  res.json({ message: 'Login successful' });
+  res.json({
+    message: 'Login successful',
+    username,
+  });
 });
 
 module.exports = loginRouter;

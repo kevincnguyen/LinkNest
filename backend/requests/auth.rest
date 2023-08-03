@@ -1,0 +1,2 @@
+GET http://localhost:3001/api/auth
+Cookie: jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNtaXRoam9obiIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkxMDMwNjA0LCJleHAiOjE2OTEwMzQyMDR9.UQWF95YrkLQt5ZiZ0ixM7LXUZ3PkB8c9OXyodNu5sks
