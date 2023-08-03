@@ -23,7 +23,7 @@ const Login = () => {
             await loginService.login({
                 username, password
             })
-            navigate('/user')
+            navigate('/admin')
         } catch (e) {
             console.error('error: ', e)
             setMessage('Invalid credentials. Try again.')

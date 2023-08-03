@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Notification from '../components/Notification'
 import signupService from '../services/signup'
+import loginService from '../services/login'
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -49,7 +50,10 @@ const Signup = () => {
                 await signupService.signup({
                     name, username, email, password
                 })
-                navigate('/user')
+                await loginService.login({
+                    username, password
+                })
+                navigate('/admin')
             }
         } catch (e) {
             console.error('error: ', e)
@@ -97,7 +101,7 @@ const Signup = () => {
                 </div>
                 <div>
                     <input
-                        type='text'
+                        type='email'
                         value={email}
                         name='Email'
                         placeholder='Email'

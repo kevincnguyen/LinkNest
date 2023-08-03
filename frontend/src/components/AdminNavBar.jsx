@@ -24,11 +24,11 @@ const AdminNavBar = () => {
     return (
         <>
             <nav>
-                <NavLink to='/user'>
+                <NavLink to='/admin'>
                     <h1>LinkNest</h1>
                 </NavLink>
                 <ul>
-                    <li><NavLink to='/user'>Dashboard</NavLink></li>
+                    <li><NavLink to='/admin'>Dashboard</NavLink></li>
                     <li>
                         <button onClick={handleLogout}>
                             Log out
