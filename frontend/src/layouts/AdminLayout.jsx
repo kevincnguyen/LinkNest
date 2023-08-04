@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom'
 
 import AdminNavBar from "../components/AdminNavBar"
-import PrivateRoute from '../authentication/PrivateRoute'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 const AdminLayout = () => {
     return (
-        <PrivateRoute>
+        <ProtectedRoute>
             <AdminNavBar />
             <Outlet />
-        </PrivateRoute>
+        </ProtectedRoute>
     )
 }
 

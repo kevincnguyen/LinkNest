@@ -1,10 +1,10 @@
 PUT http://localhost:3001/api/users/64c59ae8b888d23d0ed1409e
 content-type: application/json 
-Cookie: jwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpzbWl0aCIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkwNjcxODk5LCJleHAiOjE2OTA2NzU0OTl9._ToQlob1-mCLVIUhZn3ht26MD_IcyxV9UZknS1O1pdQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNtaXRoam9obiIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkxMTA0MTM4LCJleHAiOjE2OTExMDc3Mzh9.ZxIrW98CrMwpeVjRSDIDQkcB8FhwVcBUlKkfea1muo8
 
 {
     "name": "John Smith",
-    "username": "smithjohn",
+    "username": "johnsmith",
     "email": "johnsmith@gmail.com", 
     "password": "password"
 }

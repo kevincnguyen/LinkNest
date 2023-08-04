@@ -1,32 +1,38 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+
 import Notification from '../components/Notification'
 import loginService from '../services/login'
+import useAuth from '../hooks/useAuth'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 
 const Login = () => {
     const navigate = useNavigate()
+    const location = useLocation()
+    const { setAuth } = useAuth()
     const [message, setMessage] = useState(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const handleUsername = (event) => {
-        setUsername(event.target.value)
-    }
+    const axiosPrivate = useAxiosPrivate()
     
-    const handlePassword = (event) => {
-        setPassword(event.target.value)
-    }
-
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
-            await loginService.login({
+            const { user, accessToken } = await loginService.login({
                 username, password
-            })
-            navigate('/admin')
-        } catch (e) {
-            console.error('error: ', e)
-            setMessage('Invalid credentials. Try again.')
+            }, axiosPrivate)
+            console.log(accessToken)
+            setAuth({ user, accessToken })
+            setUsername('')
+            setPassword('')
+            const origin = location.state?.from?.pathname || '/admin'
+            navigate(origin, { replace: true })
+        } catch (error) {
+            if (!error.response) {
+                setMessage('No server response')
+            } else {
+                setMessage('Invalid username or password. Please try again.')
+            }
             setUsername('')
             setPassword('')
         }
@@ -45,7 +51,8 @@ const Login = () => {
                         value={username}
                         name='Username'
                         placeholder='Username'
-                        onChange={handleUsername}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -54,7 +61,8 @@ const Login = () => {
                         value={password}
                         name='Password'
                         placeholder='Password'
-                        onChange={handlePassword}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                 </div>
                 <button type='submit'>

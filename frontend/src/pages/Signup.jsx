@@ -1,37 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import Notification from '../components/Notification'
 import signupService from '../services/signup'
 import loginService from '../services/login'
+import useAuth from '../hooks/useAuth'
 
 const Signup = () => {
     const navigate = useNavigate()
+    const { setAuth } = useAuth()
     const [message, setMessage] = useState(null)
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
-    const handleName = (event) => {
-        setName(event.target.value)
-    }
-
-    const handleUsername = (event) => {
-        setUsername(event.target.value)
-    }
-
-    const handleEmail = (event) => {
-        setEmail(event.target.value)
-    }
-    
-    const handlePassword = (event) => {
-        setPassword(event.target.value)
-    }
-
-    const handleConfirmPassword = (event) => {
-        setConfirmPassword(event.target.value)
-    }
 
     const handleSignup = async (event) => {
         event.preventDefault()
@@ -50,9 +33,10 @@ const Signup = () => {
                 await signupService.signup({
                     name, username, email, password
                 })
-                await loginService.login({
+                const { accessToken } = await loginService.login({
                     username, password
                 })
+                setAuth(username, accessToken)
                 navigate('/admin')
             }
         } catch (e) {
@@ -87,7 +71,8 @@ const Signup = () => {
                         value={name}
                         name='Name'
                         placeholder='Name'
-                        onChange={handleName}
+                        onChange={(e) => setName(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -96,7 +81,8 @@ const Signup = () => {
                         value={username}
                         name='Username'
                         placeholder='Username'
-                        onChange={handleUsername}
+                        onChange={(e) => setName(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -105,7 +91,8 @@ const Signup = () => {
                         value={email}
                         name='Email'
                         placeholder='Email'
-                        onChange={handleEmail}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -114,7 +101,8 @@ const Signup = () => {
                         value={password}
                         name='Password'
                         placeholder='Password'
-                        onChange={handlePassword}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -123,7 +111,8 @@ const Signup = () => {
                         value={confirmPassword}
                         name='ConfirmPassword'
                         placeholder='Confirm Password'
-                        onChange={handleConfirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
                     />
                 </div>
                 <button type='submit'>

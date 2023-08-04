@@ -1,14 +1,13 @@
 import axios from 'axios'
-const baseUrl = '/api/logout'
+const baseUrl = '/api/refresh'
 
-const logout = async () => {
+const refresh = async () => {
     const config = {
         withCredentials: true,
         headers: { 'Content-Type': 'application/json'}
     }
-
     const response = await axios.post(baseUrl, config)
-    return response.data 
+    return response.data
 }
 
-export default { logout }
+export default { refresh }

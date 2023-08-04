@@ -2,15 +2,20 @@ const linksRouter = require('express').Router();
 const Link = require('../models/link');
 const middleware = require('../utils/middleware');
 
-// gets all links
+// (DELETE?)
+// @desc Gets all links
+// @route /api/links
+// @access Public
 linksRouter.get('/', async (req, res) => {
   const links = await Link.find({})
     .populate('user', { id: 1, name: 1, username: 1 });
   res.json(links);
 });
 
-// adds link if logged in
-linksRouter.post('/', middleware.userExtractor, async (req, res) => {
+// @desc Adds a link
+// @route POST /api/links
+// @access Private
+linksRouter.post('/', middleware.verifyJWT, async (req, res) => {
   const { user } = req;
 
   if (!req.body.user) {
@@ -39,8 +44,10 @@ linksRouter.post('/', middleware.userExtractor, async (req, res) => {
   res.status(201).json(updatedLink);
 });
 
-// updates link if logged in
-linksRouter.put('/:id', middleware.userExtractor, async (req, res) => {
+// @desc Updates a link
+// @route PUT /api/links/:id
+// @access Private
+linksRouter.put('/:id', middleware.verifyJWT, async (req, res) => {
   const { user } = req;
   const requestLink = await Link.findById(req.params.id);
 
@@ -71,8 +78,10 @@ linksRouter.put('/:id', middleware.userExtractor, async (req, res) => {
   res.json(updatedLink);
 });
 
-// delete link only if logged in
-linksRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
+// @desc Deletes a link
+// @route DELETE /api/links/:id
+// @access Private
+linksRouter.delete('/:id', middleware.verifyJWT, async (req, res) => {
   const { user } = req;
   const requestLink = await Link.findById(req.params.id);
 

@@ -1,0 +1,2 @@
+POST http://localhost:3001/api/refresh
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkxMTA2NTAwLCJleHAiOjE2OTExOTI5MDB9.k7S7PZECIOpIlAow0c-YDsNmo9yzSyXsnTLSgCfOmYg

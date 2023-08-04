@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import photo from '../assets/kevin.jpg'
+import Photo from '../assets/kevin.jpg'
 
 const About = () => {
     return (
         <div>
-            <img src={photo} alt="My Photo"/>
+            <img src={Photo} alt="My Photo"/>
             <div className='textbox'>
                 <h1>About Me</h1>
                 <p>Hi! I&apos;m Kevin. Check out my LinkNest:</p>

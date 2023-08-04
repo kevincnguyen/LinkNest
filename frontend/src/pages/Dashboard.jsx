@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom'
 
 const Dashboard = () => {
-    const username = 'TEST'
-
-    // if NOT logged in, redirect to login
+    const user = 'TEST'
 
     return (
         <div>
-            <h1>Welcome to LinkNest, {username}</h1>
+            <h1>Welcome to LinkNest, {user}</h1>
             <h3>Please select a category: </h3>
             <Link to='/admin/edit'>Edit your LinkNest</Link>
+            <br />
             <Link to='/admin/account'>Edit your profile</Link>
         </div>
     )

@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const signupRouter = require('express').Router();
 const User = require('../models/user');
 
+// @desc Create new user
+// @route POST /api/signup
+// @access Public
 signupRouter.post('/', async (req, res) => {
   const {
     name, username, email, password,

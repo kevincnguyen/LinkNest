@@ -1,11 +1,20 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const loginRouter = require('express').Router();
-const User = require('../models/user');
-const config = require('../utils/config');
 
+const User = require('../models/user');
+const { createAccessToken, createRefreshToken, sendRefreshToken } = require('../utils/auth');
+
+// @desc Logs in user
+// @route POST /api/login
+// @access Public
 loginRouter.post('/', async (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(401).json({
+      error: 'All fields required',
+    });
+  }
 
   const user = await User.findOne({ username });
   const passwordCorrect = user === null
@@ -18,27 +27,12 @@ loginRouter.post('/', async (req, res) => {
     });
   }
 
-  const userForToken = {
-    username: user.username,
-    id: user._id,
-  };
-
-  const token = jwt.sign(
-    userForToken,
-    config.SECRET,
-    { expiresIn: '1h' },
-  );
-
-  res.cookie('jwtToken', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'strict',
-    maxAge: 3600000,
-  });
+  sendRefreshToken(res, createRefreshToken(user));
 
   res.json({
     message: 'Login successful',
-    username,
+    accessToken: createAccessToken(user),
+    user,
   });
 });
 

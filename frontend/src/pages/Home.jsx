@@ -8,7 +8,7 @@ const Home = () => {
             <p>Organize all your social media profiles in one place</p>
             <p>Share and connect with your audience with a single link</p>
             <p>Curate a list of your favorite bookmarks and resources</p>
-            <Link to='/auth/signup'>
+            <Link to='/signup'>
                 <button>Get started</button>
             </Link>
         </div>

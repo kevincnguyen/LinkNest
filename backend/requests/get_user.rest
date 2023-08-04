@@ -1,0 +1,2 @@
+GET http://localhost:3001/api/users/64c59ae8b888d23d0ed1409e
+content-type: application/json 
