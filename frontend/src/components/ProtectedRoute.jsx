@@ -12,35 +12,6 @@ const ProtectedRoute = ({ children }) => {
             ? children
             : <Navigate to='/login' state={{ from: location }} replace />
     )
-
-    // const [loading, setLoading] = useState(true)
-    // const [status, setStatus] = useState(null)
-
-    // useEffect(() => {
-    //     const getStatus = async () => {
-    //         try {
-    //             const res = await authService.isLoggedIn()
-    //             setStatus(res)
-    //         } catch (e) {
-    //             setStatus(e.response.request.status)
-    //         }
-    //         setLoading(false)
-    //     }      
-    //     getStatus()
-    // }, [])
-
-    // if (loading) {
-    //     return (
-    //         <div>
-    //             Loading...
-    //         </div>
-    //     )
-    // }
-
-    // if (status !== 200) {
-    //     return <Navigate to='/auth/login' replace state={{ from: location }} />
-    // }
-    // return children
 }
 
 ProtectedRoute.propTypes = {

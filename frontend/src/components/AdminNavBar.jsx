@@ -1,29 +1,16 @@
-import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import Emoji from './Emoji'
-import Notification from './Notification'
-import logoutService from '../services/logout'
-import useAuth from '../hooks/useAuth'
+import useLogout from '../hooks/useLogout'
+
 
 const AdminNavBar = () => {
+    const logout = useLogout()
     const navigate = useNavigate()
-    const { setAuth } = useAuth()
-    const [message, setMessage] = useState(null)
 
-    const handleLogout = async (event) => {
-        event.preventDefault()
-        try {
-            await logoutService.logout()
-            setAuth({})
-            navigate('/')
-        } catch (e) {
-            console.error('error: ', e)
-            setMessage('Unable to logout. Please try again.')
-        }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
+    const handleLogout = async () => {
+        await logout()
+        navigate('/')
     }
 
     return (
@@ -38,7 +25,16 @@ const AdminNavBar = () => {
                     </NavLink>
                 </div>
                 <ul>
-                    <li><NavLink to='/admin'>Dashboard</NavLink></li>
+                    <li>
+                        <NavLink to='/admin'>
+                                Dashboard
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to='/admin/account'>
+                            Profile
+                        </NavLink>
+                    </li>
                     <li>
                         <button onClick={handleLogout}>
                             Log out
@@ -46,7 +42,6 @@ const AdminNavBar = () => {
                     </li>
                 </ul>
             </nav>
-            <Notification message={message} />
         </>
     )
 }

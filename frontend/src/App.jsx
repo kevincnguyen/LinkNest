@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
-import Edit from './pages/Edit'
+import Appearance from './pages/Appearance'
+import Links from './pages/Links'
 import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
@@ -26,7 +27,8 @@ const App = () => {
         <Route path='/admin' element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path='account' element={<Account />} />
-            <Route path='edit' element={<Edit />} />
+            <Route path='appearance' element={<Appearance />} />
+            <Route path='links' element={<Links />} />
         </Route>
         <Route path='/:username' element={<LinkNest />} />
         <Route path='*' element={<NotFound />}/>

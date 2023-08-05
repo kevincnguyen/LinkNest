@@ -1,20 +1,23 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import Notification from '../components/Notification'
-import signupService from '../services/signup'
-import loginService from '../services/login'
 import useAuth from '../hooks/useAuth'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import loginService from '../services/login'
+import signupService from '../services/signup'
+import Notification from '../components/Notification'
+
 
 const Signup = () => {
     const navigate = useNavigate()
+    const axiosPrivate = useAxiosPrivate()
     const { setAuth } = useAuth()
-    const [message, setMessage] = useState(null)
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [message, setMessage] = useState(null)
 
     const handleSignup = async (event) => {
         event.preventDefault()
@@ -33,26 +36,33 @@ const Signup = () => {
                 await signupService.signup({
                     name, username, email, password
                 })
-                const { accessToken } = await loginService.login({
+                const { user, accessToken } = await loginService.login({
                     username, password
-                })
-                setAuth(username, accessToken)
+                }, axiosPrivate)
+                setAuth({ user, accessToken })
                 navigate('/admin')
             }
-        } catch (e) {
-            console.error('error: ', e)
-            if (e.response.data.error.includes('username') && e.response.data.error.includes('email')) {
-                setMessage('Account already exists with username and email. Try a different username and email.')
-            } else if (e.response.data.error.includes('username')) {
-                setMessage('Account already exists with username. Try a different username.')
-            } else if (e.response.data.error.includes('email')) {
-                setMessage('Account already exists with email. Try a different email.')
+        } catch (err) {
+            console.error('error: ', err)
+            if (!err.response) {
+                setMessage('No server response')
+            } else if (err.response.data.error.includes('username') 
+                        && err.response.data.error.includes('email')) {
+                setMessage('An account already exists with that username and email. Please try a different username and email.')
+                setUsername('')
+                setEmail('')
+            } else if (err.response.data.error.includes('username')) {
+                setMessage('An account already exists with that username. Please try a different username.')
+                setUsername('')
+            } else if (err.response.data.error.includes('email')) {
+                setMessage('An account already exists with that email. Please try a different email.')
+                setEmail('')
             } else {
-                setMessage('Invalid credentials. Try again.')
+                setMessage('Invalid credentials. Please try again.')
+                setName('')
+                setUsername('')
+                setEmail('')
             }
-            setName('')
-            setUsername('')
-            setEmail('')
             setPassword('')
             setConfirmPassword('')
         }
@@ -62,65 +72,82 @@ const Signup = () => {
     }
 
     return (
-        <div>
-            <h2>Create your account</h2>
-            <form onSubmit={handleSignup}>
-                <div>
+        <>
+            <div>
+                <h1>Create your account</h1>
+                <form onSubmit={handleSignup}>
+                    <label htmlFor='name'>Name:</label>
                     <input
                         type='text'
                         value={name}
+                        id='name'
                         name='Name'
                         placeholder='Name'
                         onChange={(e) => setName(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <div>
+                    <br />
+                    <label htmlFor='username'>Username:</label>
                     <input
                         type='text'
                         value={username}
+                        id='username'
                         name='Username'
                         placeholder='Username'
                         onChange={(e) => setName(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <div>
+                    <br />
+                    <label htmlFor='email'>Email:</label>
                     <input
                         type='email'
                         value={email}
+                        id='email'
                         name='Email'
                         placeholder='Email'
                         onChange={(e) => setEmail(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <div>
+                    <br />
+                    <label htmlFor='password'>Password:</label>
                     <input
                         type='password'
                         value={password}
+                        id='password'
                         name='Password'
                         placeholder='Password'
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <div>
+                    <br />
+                    <label htmlFor='confirmPassword'>Confirm Password:</label>
                     <input
                         type='password'
                         value={confirmPassword}
+                        id='confirmPassword'
                         name='ConfirmPassword'
                         placeholder='Confirm Password'
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <button type='submit'>
-                    Create account
-                </button>
-            </form>
-            <Notification message={message} />
-        </div>
+                    <br />
+                    <button type='submit'>
+                        Create account
+                    </button>
+                </form>
+                <Notification message={message} />
+            </div>
+            <br />
+            <div>
+                <span>Already have an account? </span>
+                <Link to='/signup'>Log in</Link>
+            </div>
+        </>
     )
 }
 

@@ -1,34 +1,34 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
-import Notification from '../components/Notification'
-import loginService from '../services/login'
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import loginService from '../services/login'
+import Notification from '../components/Notification'
 
 const Login = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const axiosPrivate = useAxiosPrivate()
     const { setAuth } = useAuth()
-    const [message, setMessage] = useState(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const axiosPrivate = useAxiosPrivate()
-    
+    const [message, setMessage] = useState(null)
+
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
             const { user, accessToken } = await loginService.login({
                 username, password
             }, axiosPrivate)
-            console.log(accessToken)
             setAuth({ user, accessToken })
             setUsername('')
             setPassword('')
             const origin = location.state?.from?.pathname || '/admin'
             navigate(origin, { replace: true })
-        } catch (error) {
-            if (!error.response) {
+        } catch (err) {
+            console.error('error: ', err)
+            if (!err.response) {
                 setMessage('No server response')
             } else {
                 setMessage('Invalid username or password. Please try again.')
@@ -42,35 +42,46 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <h2>Log in to your LinkNest</h2>
-            <form onSubmit={handleLogin}>
-                <div>
+        <>
+            <div>
+                <h1>Log in to LinkNest</h1>
+                <form onSubmit={handleLogin}>
+                    <label htmlFor='username'>Username:</label>
                     <input
                         type='text'
                         value={username}
+                        id='username'
                         name='Username'
                         placeholder='Username'
                         onChange={(e) => setUsername(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <div>
+                    <br />
+                    <label htmlFor='password'>Password:</label>
                     <input
                         type='password'
                         value={password}
+                        id='password'
                         name='Password'
                         placeholder='Password'
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete='off'
                         required
                     />
-                </div>
-                <button type='submit'>
-                    Log in
-                </button>
-            </form>
-            <Notification message={message} />
-        </div>
+                    <br />
+                    <button type='submit'>
+                        Log in
+                    </button>
+                </form>
+                <Notification message={message} />
+            </div>
+            <br />
+            <div>
+                <span>Need an Account? </span>
+                <Link to='/signup'>Sign up</Link>
+            </div>
+        </>
     )
 }
 

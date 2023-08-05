@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 
 const Dashboard = () => {
-    const user = 'TEST'
-
+    const { auth } = useAuth()
     return (
         <div>
-            <h1>Welcome to LinkNest, {user}</h1>
+            <h1>Welcome to LinkNest, {auth.user.name}</h1>
             <h3>Please select a category: </h3>
-            <Link to='/admin/edit'>Edit your LinkNest</Link>
+            <Link to='/admin/links'>Edit links</Link>
             <br />
-            <Link to='/admin/account'>Edit your profile</Link>
+            <Link to='/admin/appearance'>Edit appearance</Link>
         </div>
     )
 }
