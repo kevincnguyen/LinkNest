@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import usersService from '../services/users'
 import Notification from '../components/Notification'
-// import { useEffect } from 'react'
 
 const Account = () => {
     // const navigate = useNavigate()
     // const location = useLocation()
+    // navigate('/login', { state: { from: location }, replace: true })
 
     const { auth, setAuth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
@@ -18,20 +18,10 @@ const Account = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
 
-    // useEffect(() => {
-    //     const updateUser = async () => {
-    //         try {
-    //             const res = await usersService.update(auth.user.id, { ...auth.user, password: 'password' }, axiosPrivate)
-    //             console.log(res)
-    //         } catch (error) {
-    //             console.error(error)
-    //             navigate('/login', { state: { from: location }, replace: true })
-    //         }
-            
-    //     }
-    //     updateUser()
-
-    // }, [])
+    useEffect(() => {
+        setName(auth.user.name)
+        setUsername(auth.user.username)
+    }, [auth.user.name, auth.user.username])
 
     const handleSave = async (event) => {
         event.preventDefault()
@@ -51,8 +41,6 @@ const Account = () => {
                     name, username, email, password, 
                 }, axiosPrivate)
                 setAuth({ user: updatedUser, accessToken: auth.accessToken})
-                setName('')
-                setUsername('')
                 setEmail('')
                 setPassword('')
                 setConfirmPassword('')

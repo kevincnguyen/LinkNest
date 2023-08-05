@@ -2,7 +2,7 @@ const logoutRouter = require('express').Router();
 
 // @desc Logs out user
 // @route POST /api/logout
-// @access Public (MAKE PRIVATE?)
+// @access Public
 logoutRouter.post('/', (req, res) => {
   const token = req.cookies.refreshToken;
 

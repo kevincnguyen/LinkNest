@@ -21,9 +21,14 @@ const userSchema = mongoose.Schema({
     minLength: [8, 'password must at least be 8 characters'],
     required: [true, 'password required'],
   },
-  profilepic: String,
+  profilepic: {
+    type: String,
+    required: [true, 'profile picture required'],
+    default: 'default.png',
+  },
   title: {
     type: String,
+    required: [true, 'title required'],
   },
   bio: String,
   links: [
@@ -35,7 +40,7 @@ const userSchema = mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.pre('save', function (next) {
+userSchema.pre('validate', function (next) {
   this.title = `@${this.username}`;
   next();
 });
@@ -47,6 +52,7 @@ userSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
+    delete returnedObject.email;
     delete returnedObject.password;
   },
 });
