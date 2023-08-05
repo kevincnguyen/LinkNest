@@ -1,9 +1,9 @@
-PUT http://localhost:3001/api/users/64c59ae8b888d23d0ed1409e
+PUT http://localhost:3001/api/users/64cd872340cc2f5a313c56f7
 content-type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNtaXRoam9obiIsImlkIjoiNjRjNTlhZThiODg4ZDIzZDBlZDE0MDllIiwiaWF0IjoxNjkxMTA0MTM4LCJleHAiOjE2OTExMDc3Mzh9.ZxIrW98CrMwpeVjRSDIDQkcB8FhwVcBUlKkfea1muo8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2Q4NzIzNDBjYzJmNWEzMTNjNTZmNyIsInVzZXJuYW1lIjoianNtaXRoIiwiaWF0IjoxNjkxMTkzNDI0LCJleHAiOjE2OTExOTQzMjR9.d8UpjVVCirUVrv4SeMdXsmfRkZEhZdX051ykptSOGfs
 
 {
-    "name": "John Smith",
+    "name": "Neil Smith",
     "username": "johnsmith",
     "email": "johnsmith@gmail.com", 
     "password": "password"

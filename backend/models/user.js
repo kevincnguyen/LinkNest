@@ -21,14 +21,23 @@ const userSchema = mongoose.Schema({
     minLength: [8, 'password must at least be 8 characters'],
     required: [true, 'password required'],
   },
-  bio: String,
   profilepic: String,
+  title: {
+    type: String,
+  },
+  bio: String,
   links: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Link',
     },
   ],
+});
+
+// eslint-disable-next-line func-names
+userSchema.pre('save', function (next) {
+  this.title = `@${this.username}`;
+  next();
 });
 
 userSchema.plugin(uniqueValidator);

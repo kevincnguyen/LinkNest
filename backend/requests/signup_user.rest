@@ -24,6 +24,7 @@ POST http://localhost:3001/api/signup
 content-type: application/json 
 
 {
+    "name": "hello",
     "username": "hello",
     "email": "hello@gmail.com", 
     "password": "password"
