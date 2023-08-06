@@ -1,13 +1,13 @@
 import axios from 'axios'
 const baseUrl = '/api/users'
 
-const getInfo = async (id) => {
-    const response = await axios.get(`${baseUrl}/${id}`)
+const getInfo = async (username) => {
+    const response = await axios.get(`${baseUrl}/${username}`)
     return response.data
 }
 
-const getProfilePic = async (id) => {
-    const response = await axios.get(`${baseUrl}/profiles/${id}`, { responseType: 'blob' })
+const getProfilePic = async (username) => {
+    const response = await axios.get(`${baseUrl}/${username}/image`, { responseType: 'blob' })
     return response.data
 }
 

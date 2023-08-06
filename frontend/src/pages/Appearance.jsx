@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth"
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import usersService from '../services/users'
 import Notification from '../components/Notification'
+import ProfilePicture from "../components/ProfilePicture"
 import Default from '../assets/default.png'
 
 const Appearance = () => {
@@ -22,10 +23,20 @@ const Appearance = () => {
             setBio(auth.user.bio)   
         }
         const getProfilePic = async () => {
-            const response = await usersService.getProfilePic(auth.user.profilepic)
-            setImage(URL.createObjectURL(response) || Default)
+            try {
+                const response = await usersService.getProfilePic(auth.user.username)
+                setImage(URL.createObjectURL(response) || Default)
+            } catch (err) {
+                console.error('error: ', err)
+                if (!err.response) {
+                    setMessage('No server response')
+                } else {
+                    setMessage('Unable to load profile picture. Please try again.')
+                }
+            }
         }
         getProfilePic()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.user.title, auth.user.bio, auth.user.profilepic])
 
     const handleSave = async (event) => {
@@ -69,11 +80,7 @@ const Appearance = () => {
             <h1>Profile</h1>
             <form onSubmit={handleSave} encType='multipart/form-data'>
                 <label htmlFor='profilepic'>
-                    <img
-                        src={image}
-                        alt='Profile Picture'
-                        style={{ width: '40%' }}
-                    />
+                    <ProfilePicture src={image}/>
                 </label>
                 <input 
                     type='file'

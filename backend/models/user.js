@@ -30,7 +30,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'title required'],
   },
-  bio: String,
+  bio: {
+    type: String,
+    default: '',
+  },
   links: [
     {
       type: mongoose.Schema.Types.ObjectId,

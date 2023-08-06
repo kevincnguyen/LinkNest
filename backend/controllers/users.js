@@ -7,21 +7,32 @@ const upload = require('../utils/multer');
 const middleware = require('../utils/middleware');
 
 // @desc Gets a specific user
-// @route GET /api/users/:id
+// @route GET /api/users/:username
 // @access Public
-usersRouter.get('/:id', async (req, res) => {
-  const user = await User.findById(req.params.id)
+usersRouter.get('/:username', async (req, res) => {
+  const user = await User.findOne({ username: req.params.username })
     .populate('links', {
       id: 1, url: 1, desc: 1, position: 1,
     });
+  if (!user) {
+    return res.status(404).json({
+      error: 'User not found',
+    });
+  }
   res.json(user);
 });
 
 // @desc Gets profile picture of a specific user
-// @route GET /api/users/profiles/:file
+// @route GET /api/users/:username/image
 // @access Public
-usersRouter.get('/profiles/:file', async (req, res) => {
-  const fileName = req.params.file;
+usersRouter.get('/:username/image', async (req, res) => {
+  const user = await User.findOne({ username: req.params.username });
+  if (!user) {
+    return res.status(404).json({
+      error: 'User not found',
+    });
+  }
+  const fileName = user.profilepic;
   const filePath = path.join(__dirname, '..', 'uploads', fileName);
   res.sendFile(filePath);
 });

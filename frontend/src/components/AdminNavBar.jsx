@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import Emoji from './Emoji'
 import useLogout from '../hooks/useLogout'
 
-
 const AdminNavBar = () => {
     const logout = useLogout()
     const navigate = useNavigate()
