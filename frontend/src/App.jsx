@@ -15,24 +15,22 @@ import AdminLayout from './layouts/AdminLayout'
 
 const App = () => {
   return (
-    <>
-      <Routes>
-        <Route element={<HomeLayout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-        </Route>
-        <Route path='/admin' element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path='account' element={<Account />} />
-            <Route path='appearance' element={<Appearance />} />
-            <Route path='links' element={<LinkBuilder />} />
-        </Route>
-        <Route path='/:username' element={<LinkNest />} />
-        <Route path='*' element={<NotFound />}/>
-      </Routes>
-    </>
+    <Routes>
+      <Route element={<HomeLayout />}>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+      </Route>
+      <Route path='/admin' element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path='account' element={<Account />} />
+          <Route path='appearance' element={<Appearance />} />
+          <Route path='links' element={<LinkBuilder />} />
+      </Route>
+      <Route path='/:username' element={<LinkNest />} />
+      <Route path='*' element={<NotFound />}/>
+    </Routes>
   )
 }
 
