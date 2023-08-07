@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import loginService from '../services/login'
 import signupService from '../services/signup'
-import Notification from '../components/Notification'
-
+import NoServerResponse from '../components/NoServerResponse'
+import AlreadyExists from '../components/AlreadyExists'
+import NoMatchPassword from '../components/NoMatchPasswords'
+import InvalidCredentials from '../components/InvalidCredentials'
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -17,19 +21,24 @@ const Signup = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [message, setMessage] = useState(null)
 
     const handleSignup = async (event) => {
         event.preventDefault()
         try {
             if (!name || !username || !email || !password || !confirmPassword) {
-                setMessage('Missing required field(s)')
+                toast.warn('Missing required field(s)', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             } else if (password.length < 8 || confirmPassword.length < 8) {
-                setMessage('Password must be at least 8 characters')
+                toast.warn('Password must be at least 8 characters', {
+                    position: toast.POSITION.TOP_CENTER
+                });
                 setPassword('')
                 setConfirmPassword('')
             } else if (password !== confirmPassword) {
-                setMessage('Passwords do not match. Try again.')
+                toast.warn(<NoMatchPassword />, {
+                    position: toast.POSITION.TOP_CENTER
+                });
                 setPassword('')
                 setConfirmPassword('')
             } else {
@@ -40,25 +49,35 @@ const Signup = () => {
                     username, password
                 }, axiosPrivate)
                 setAuth({ user, accessToken })
-                navigate('/admin')
+                navigate('/admin/dashboard')
             }
         } catch (err) {
             console.error('error: ', err)
             if (!err.response) {
-                setMessage('No server response')
+                toast.error(<NoServerResponse />, {
+                    position: toast.POSITION.TOP_CENTER
+                });
             } else if (err.response.data.error.includes('username') 
-                        && err.response.data.error.includes('email')) {
-                setMessage('An account already exists with that username and email. Please try a different username and email.')
+                        && err.response.data.error.includes('email')) { 
+                toast.error(<AlreadyExists user={true} email={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                });          
                 setUsername('')
                 setEmail('')
             } else if (err.response.data.error.includes('username')) {
-                setMessage('An account already exists with that username. Please try a different username.')
+                toast.error(<AlreadyExists user={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                });        
                 setUsername('')
             } else if (err.response.data.error.includes('email')) {
-                setMessage('An account already exists with that email. Please try a different email.')
+                toast.error(<AlreadyExists email={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                });        
                 setEmail('')
             } else {
-                setMessage('Invalid credentials. Please try again.')
+                toast.error(<InvalidCredentials />, {
+                    position: toast.POSITION.TOP_CENTER
+                });     
                 setName('')
                 setUsername('')
                 setEmail('')
@@ -66,88 +85,118 @@ const Signup = () => {
             setPassword('')
             setConfirmPassword('')
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
     return (
-        <>
-            <div>
-                <h1>Create your account</h1>
-                <form onSubmit={handleSignup}>
-                    <label htmlFor='name'>Name:</label>
-                    <input
-                        type='text'
-                        value={name}
-                        id='name'
-                        name='Name'
-                        placeholder='Name'
-                        onChange={(e) => setName(e.target.value)}
-                        autoComplete='off'
-                        required
-                    />
-                    <br />
-                    <label htmlFor='username'>Username:</label>
-                    <input
-                        type='text'
-                        value={username}
-                        id='username'
-                        name='Username'
-                        placeholder='Username'
-                        onChange={(e) => setUsername(e.target.value)}
-                        autoComplete='off'
-                        required
-                    />
-                    <br />
-                    <label htmlFor='email'>Email:</label>
-                    <input
-                        type='email'
-                        value={email}
-                        id='email'
-                        name='Email'
-                        placeholder='Email'
-                        onChange={(e) => setEmail(e.target.value)}
-                        autoComplete='off'
-                        required
-                    />
-                    <br />
-                    <label htmlFor='password'>Password:</label>
-                    <input
-                        type='password'
-                        value={password}
-                        id='password'
-                        name='Password'
-                        placeholder='Password'
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete='off'
-                        required
-                    />
-                    <br />
-                    <label htmlFor='confirmPassword'>Confirm Password:</label>
-                    <input
-                        type='password'
-                        value={confirmPassword}
-                        id='confirmPassword'
-                        name='ConfirmPassword'
-                        placeholder='Confirm Password'
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        autoComplete='off'
-                        required
-                    />
-                    <br />
-                    <button type='submit'>
+        <div className='relative flex flex-col justify-center'>
+            <div className='w-full mt-4 p-6 m-auto bg-base-100 border rounded-md shadow-md lg:max-w-xl'>
+                <h2 className='text-3xl font-semibold text-center'>
+                    Create an account 
+                </h2>
+                <form onSubmit={handleSignup} className='form-control space-y-2'>
+                    <div>
+                        <label htmlFor='name' className='label'>
+                            <span className='text-base label-text'>
+                                Name
+                            </span>
+                        </label>
+                        <input
+                            type='text'
+                            value={name}
+                            id='name'
+                            name='Name'
+                            placeholder='Name'
+                            onChange={(e) => setName(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-accent'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='username' className='label'>
+                            <span className='text-base label-text'>
+                                Username
+                            </span>
+                        </label>
+                        <input
+                            type='text'
+                            value={username}
+                            id='username'
+                            name='Username'
+                            placeholder='Username'
+                            onChange={(e) => setUsername(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-accent'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='email' className='label'>
+                            <span className='text-base label-text'>
+                                Email
+                            </span>
+                        </label>
+                        <input
+                            type='email'
+                            value={email}
+                            id='email'
+                            name='Email'
+                            placeholder='Email'
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-accent'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='password' className='label'>
+                            <span className='text-base label-text'>
+                                Password
+                            </span>
+                        </label>
+                        <input
+                            type='password'
+                            value={password}
+                            id='password'
+                            name='Password'
+                            placeholder='Password'
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-accent'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='confirmPassword' className='label'>
+                            <span className='text-base label-text'>
+                                Confirm Password
+                            </span>
+                        </label>
+                        <input
+                            type='password'
+                            value={confirmPassword}
+                            id='confirmPassword'
+                            name='ConfirmPassword'
+                            placeholder='Confirm Password'
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-accent'
+                        />
+                    </div>
+                    <button type='submit' className='btn btn-block btn-accent'>
                         Create account
                     </button>
                 </form>
-                <Notification message={message} />
+                <div className='text-sm mt-2'>
+                    <span>Already have an account? </span>
+                    <Link to='/login' className='text-secondary hover:text-secondary-focus'>
+                        Log in
+                    </Link>
+                </div>
+                <ToastContainer />
             </div>
-            <br />
-            <div>
-                <span>Already have an account? </span>
-                <Link to='/signup'>Log in</Link>
-            </div>
-        </>
+        </div>
     )
 }
 

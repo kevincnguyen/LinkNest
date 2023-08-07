@@ -26,7 +26,7 @@ const Login = () => {
             setAuth({ user, accessToken })
             setUsername('')
             setPassword('')
-            const origin = location.state?.from?.pathname || '/admin'
+            const origin = location.state?.from?.pathname || '/admin/dashboard'
             navigate(origin, { replace: true })
         } catch (err) {
             console.error('error: ', err)
@@ -35,7 +35,7 @@ const Login = () => {
                     position: toast.POSITION.TOP_CENTER
                 });
             } else {
-                toast.error(<InvalidCredentials />, {
+                toast.error(<InvalidCredentials login={true}/>, {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -68,7 +68,7 @@ const Login = () => {
                             className='w-full input input-bordered input-secondary'
                         />
                     </div>
-                    <div className='mb-8'>
+                    <div>
                         <label htmlFor='password' className='label'>
                             <span className='text-base label-text'>
                                 Password

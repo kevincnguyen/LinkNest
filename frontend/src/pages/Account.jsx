@@ -5,10 +5,6 @@ import usersService from '../services/users'
 import Notification from '../components/Notification'
 
 const Account = () => {
-    // const navigate = useNavigate()
-    // const location = useLocation()
-    // navigate('/login', { state: { from: location }, replace: true })
-
     const { auth, setAuth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
     const [name, setName] = useState('')

@@ -23,7 +23,7 @@ const App = () => {
         <Route path='/signup' element={<Signup />} />
       </Route>
       <Route path='/admin' element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route path='dashboard' element={<Dashboard />} />
           <Route path='account' element={<Account />} />
           <Route path='appearance' element={<Appearance />} />
           <Route path='links' element={<LinkBuilder />} />
