@@ -26,18 +26,24 @@ const LinkCard = ({ link, index, handleSave, handleDelete }) => {
                             </div>
                             <input 
                                 type='text'
+                                name='Description'
                                 value={desc}
                                 onChange={(e) => setDesc(e.target.value)}
                                 onFocus={() => setIsFocused(true)}
                                 onBlur={handleBlur}
+                                autoComplete='off'
+                                required
                             />
                             <br />
                             <input 
-                                type='url'
+                                type="text"
+                                name='Url'
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
                                 onFocus={() => setIsFocused(true)}
                                 onBlur={handleBlur}
+                                autoComplete='off'
+                                required
                             />
                             <br />
                             <DeleteButton handleDelete={() => handleDelete(link.id)} />

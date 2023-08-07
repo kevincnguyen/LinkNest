@@ -10,13 +10,13 @@ linksRouter.post('/', middleware.verifyJWT, async (req, res) => {
 
   if (!req.body.user) {
     return res.status(400).json({
-      error: 'user required',
+      error: 'User required',
     });
   }
 
   if (req.body.user.toString() !== user.id.toString()) {
     return res.status(401).json({
-      error: 'links can only be added by its authorized user',
+      error: 'Links can only be added by its authorized user',
     });
   }
 
@@ -25,7 +25,6 @@ linksRouter.post('/', middleware.verifyJWT, async (req, res) => {
     user: user.id,
   });
 
-  // link.populate('user', { id: 1, name: 1, username: 1 });
   const updatedLink = await link.save();
 
   user.links = user.links.concat(link.id);
@@ -40,6 +39,12 @@ linksRouter.post('/', middleware.verifyJWT, async (req, res) => {
 linksRouter.put('/:id', middleware.verifyJWT, async (req, res) => {
   const { user } = req;
   const requestLink = await Link.findById(req.params.id);
+
+  if (!requestLink) {
+    return res.status(404).json({
+      error: 'Link not found',
+    });
+  }
 
   if (requestLink.user.toString() !== user.id.toString()) {
     return res.status(401).json({

@@ -6,12 +6,15 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { StrictModeDroppable } from '../components/StrictModeDroppable'
 import linksService from '../services/links'
 import LinkCard from '../components/LinkCard'
+import AddLinkForm from '../components/AddLinkForm'
+import AddLinkButton from '../components/AddLinkButton'
 import Notification from '../components/Notification'
 
 const LinkBuilder = () => {
     const axiosPrivate = useAxiosPrivate()
     const { auth, setAuth } = useAuth()
     const [links, setLinks] = useState([])
+    const [visible, setVisible] = useState(false)
     const [message, setMessage] = useState(null)
 
     useEffect(() => {
@@ -53,21 +56,18 @@ const LinkBuilder = () => {
         }, 5000)
     }
 
-    const handleDelete = async (id) => {
+    const handleAdd = async (desc, url) => {
         try {
-            await linksService.remove(id, axiosPrivate)
-            const updatedLinks = auth.user.links.filter(l => l.id !== id)
-            updatedLinks.forEach((link, index) => {
-                link.position = index
-            })
+            const linkUrl = url.startsWith('http://') ? url : 'http://' + url;
+            const newLink = {
+                url: linkUrl,
+                desc, 
+                position: links.length, 
+                user: auth.user.id
+            }
+            const addedLink = await linksService.add(newLink, axiosPrivate)
+            const updatedLinks = links.concat(addedLink)
             setLinks(updatedLinks)
-            await Promise.all(updatedLinks.map(async (link, index) => {
-                if (links[index].id !== updatedLinks[index].id) {
-                    await linksService.update(updatedLinks[index].id,
-                                                { position: updatedLinks[index].position},
-                                                axiosPrivate)
-                }
-            }))
             setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
         } catch (err) {
             console.log('error: ', err)
@@ -101,11 +101,45 @@ const LinkBuilder = () => {
         }, 5000)
     }
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Delete this forever?')) {
+            try {
+                await linksService.remove(id, axiosPrivate)
+                const updatedLinks = auth.user.links.filter(l => l.id !== id)
+                updatedLinks.forEach((link, index) => {
+                    link.position = index
+                })
+                setLinks(updatedLinks)
+                await Promise.all(updatedLinks.map(async (link, index) => {
+                    if (links[index].id !== updatedLinks[index].id) {
+                        await linksService.update(updatedLinks[index].id,
+                                                    { position: updatedLinks[index].position},
+                                                    axiosPrivate)
+                    }
+                }))
+                setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
+            } catch (err) {
+                console.log('error: ', err)
+                if (!err.response) {
+                    setMessage('No server response')
+                } else {
+                    setMessage('Unable to save changes. Please try again.')
+                }
+            }
+        }
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000)
+    }
+
+    const toggleVisibility = () => {
+        setVisible((prev) => !prev)
+    }
+
     return (
         <div>
-            <button>
-                + Add link
-            </button>
+            {!visible && <AddLinkButton hide={toggleVisibility} />}
+            {visible && <AddLinkForm handleAdd={handleAdd} hide={toggleVisibility} />}
             <DragDropContext onDragEnd={handleDragEnd}>
                 <StrictModeDroppable droppableId='links-list'>
                     {(provided) => (
