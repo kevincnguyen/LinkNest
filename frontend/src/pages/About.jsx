@@ -23,7 +23,7 @@ const About = () => {
                         Check out my LinkNest:
                     </p>
                     <Link to='/kevin' className='card-actions'>
-                        <button className='btn btn-block'>
+                        <button className='btn btn-block font-bold'>
                             Connect with me
                         </button>
                     </Link>

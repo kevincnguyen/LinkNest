@@ -4,8 +4,8 @@ import Emoji from '../components/Emoji'
 const Home = () => {
     return (
         <div className='flex flex-col justify-center items-center min-w-screen'>  
-            <h1 className='text-3xl text-accent-content font-bold text-center mt-8 mb-10'>
-                Create and customize a nest of your personal links
+            <h1 className='text-4xl text-accent-content font-bold text-center mt-8 mb-10'>
+                Build a nest of your personal links
             </h1>
             <h2 className='text-xl text-accent-content text-center mb-4'>
                 Use LinkNest to:
