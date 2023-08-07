@@ -2,16 +2,6 @@ const linksRouter = require('express').Router();
 const Link = require('../models/link');
 const middleware = require('../utils/middleware');
 
-// (DELETE?)
-// @desc Gets all links
-// @route /api/links
-// @access Public
-linksRouter.get('/', async (req, res) => {
-  const links = await Link.find({})
-    .populate('user', { id: 1, name: 1, username: 1 });
-  res.json(links);
-});
-
 // @desc Adds a link
 // @route POST /api/links
 // @access Private
@@ -35,7 +25,7 @@ linksRouter.post('/', middleware.verifyJWT, async (req, res) => {
     user: user.id,
   });
 
-  link.populate('user', { id: 1, name: 1, username: 1 });
+  // link.populate('user', { id: 1, name: 1, username: 1 });
   const updatedLink = await link.save();
 
   user.links = user.links.concat(link.id);
@@ -55,16 +45,6 @@ linksRouter.put('/:id', middleware.verifyJWT, async (req, res) => {
     return res.status(401).json({
       error: 'this link can only be updated by its authorized user',
     });
-  }
-
-  if (!req.body.url) {
-    return res.status(400).json({ error: 'url required' });
-  } if (!req.body.desc) {
-    return res.status(400).json({ error: 'description required' });
-  } if (!req.body.position) {
-    return res.status(400).json({ error: 'position required' });
-  } if (!req.body.user) {
-    return res.status(400).json({ error: 'user required' });
   }
 
   const link = { ...req.body };

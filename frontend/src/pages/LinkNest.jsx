@@ -6,7 +6,7 @@ import NotFound from "./NotFound";
 import ProfilePicture from '../components/ProfilePicture'
 import Title from '../components/Title'
 import Bio from '../components/Bio'
-import Links from '../components/Links'
+import DisplayLinks from '../components/DisplayLinks'
 import Logo from '../components/Logo'
 import Loading from '../components/Loading'
 
@@ -47,7 +47,7 @@ const LinkNest = () => {
             <ProfilePicture src={profilePicture} />
             <Title text={user.title} />
             {user.bio && <Bio text={user.bio} />}
-            {user.links && <Links links={user.links} />}
+            {user.links && <DisplayLinks links={user.links} />}
             <Logo />
         </>
     )

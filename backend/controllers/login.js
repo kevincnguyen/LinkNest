@@ -16,7 +16,10 @@ loginRouter.post('/', async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username })
+    .populate('links', {
+      id: 1, url: 1, desc: 1, position: 1,
+    });
   const passwordCorrect = user === null
     ? false
     : await bcrypt.compare(password, user.password);

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const Link = ({ url, desc }) => {
+const DisplayLink = ({ url, desc }) => {
     return (
         <a href={url}>
             {desc}
@@ -8,9 +8,9 @@ const Link = ({ url, desc }) => {
     )
 }
 
-Link.propTypes = {
+DisplayLink.propTypes = {
     url: PropTypes.string.isRequired, 
     desc: PropTypes.string.isRequired
 }
 
-export default Link
+export default DisplayLink

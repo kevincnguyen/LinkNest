@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
 import Appearance from './pages/Appearance'
-import Links from './pages/Links'
+import LinkBuilder from './pages/LinkBuilder'
 import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
@@ -14,7 +14,6 @@ import HomeLayout from './layouts/HomeLayout'
 import AdminLayout from './layouts/AdminLayout'
 
 const App = () => {
-
   return (
     <>
       <Routes>
@@ -28,7 +27,7 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path='account' element={<Account />} />
             <Route path='appearance' element={<Appearance />} />
-            <Route path='links' element={<Links />} />
+            <Route path='links' element={<LinkBuilder />} />
         </Route>
         <Route path='/:username' element={<LinkNest />} />
         <Route path='*' element={<NotFound />}/>
