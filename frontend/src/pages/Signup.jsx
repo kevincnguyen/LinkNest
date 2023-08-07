@@ -95,7 +95,7 @@ const Signup = () => {
                         id='username'
                         name='Username'
                         placeholder='Username'
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setUsername(e.target.value)}
                         autoComplete='off'
                         required
                     />
