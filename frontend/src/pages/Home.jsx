@@ -29,7 +29,7 @@ const Home = () => {
                 </div>
             </div>
             <Link to='/signup'>
-                <button className='btn btn-wide btn-accent text-accent-content'>
+                <button className='btn btn-wide btn-accent font-bold text-accent-content'>
                     Build your own nest
                 </button>
             </Link>
