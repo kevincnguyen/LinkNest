@@ -89,7 +89,7 @@ const Signup = () => {
 
     return (
         <div className='relative flex flex-col justify-center'>
-            <div className='w-full mt-4 p-6 m-auto bg-base-100 border rounded-md shadow-md lg:max-w-xl'>
+            <div className='w-full mt-3 p-6 m-auto bg-base-100 border rounded-md shadow-md lg:max-w-xl'>
                 <h2 className='text-3xl font-semibold text-center'>
                     Create an account 
                 </h2>
@@ -105,7 +105,6 @@ const Signup = () => {
                             value={name}
                             id='name'
                             name='Name'
-                            placeholder='Name'
                             onChange={(e) => setName(e.target.value)}
                             autoComplete='off'
                             required
@@ -123,7 +122,6 @@ const Signup = () => {
                             value={username}
                             id='username'
                             name='Username'
-                            placeholder='Username'
                             onChange={(e) => setUsername(e.target.value)}
                             autoComplete='off'
                             required
@@ -141,7 +139,6 @@ const Signup = () => {
                             value={email}
                             id='email'
                             name='Email'
-                            placeholder='Email'
                             onChange={(e) => setEmail(e.target.value)}
                             autoComplete='off'
                             required
@@ -159,7 +156,6 @@ const Signup = () => {
                             value={password}
                             id='password'
                             name='Password'
-                            placeholder='Password'
                             onChange={(e) => setPassword(e.target.value)}
                             autoComplete='off'
                             required
@@ -177,7 +173,6 @@ const Signup = () => {
                             value={confirmPassword}
                             id='confirmPassword'
                             name='ConfirmPassword'
-                            placeholder='Confirm Password'
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             autoComplete='off'
                             required
