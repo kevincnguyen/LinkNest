@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import usersService from '../services/users'
-import Notification from '../components/Notification'
+import AlreadyExists from '../components/AlreadyExists'
+import NoMatchPasswords from '../components/NoMatchPasswords'
+import NoServerResponse from '../components/NoServerResponse'
+import InvalidCredentials from '../components/InvalidCredentials'
 
 const Account = () => {
     const { auth, setAuth } = useAuth()
@@ -12,7 +18,6 @@ const Account = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         setName(auth.user.name)
@@ -23,13 +28,19 @@ const Account = () => {
         event.preventDefault()
         try {
             if (!name || !username || !email || !password || !confirmPassword) {
-                setMessage('Missing required field(s)')
+                toast.warn('Missing required field(s).', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             } else if (password.length < 8 || confirmPassword.length < 8) {
-                setMessage('Password must be at least 8 characters')
+                toast.warn('Password must be at least 8 characters.', {
+                    position: toast.POSITION.TOP_CENTER
+                });
                 setPassword('')
                 setConfirmPassword('')
             } else if (password !== confirmPassword) {
-                setMessage('Passwords do not match. Try again.')
+                toast.warn(<NoMatchPasswords />, {
+                    position: toast.POSITION.TOP_CENTER
+                });
                 setPassword('')
                 setConfirmPassword('')
             } else {
@@ -40,29 +51,41 @@ const Account = () => {
                 setEmail('')
                 setPassword('')
                 setConfirmPassword('')
-                setMessage('Account details successfully updated')
+                toast.success('Account details successfully updated.', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         } catch (err) {
             console.error('error: ', err)
             if (!err.response) {
-                setMessage('No server response')
+                toast.error(<NoServerResponse />, {
+                    position: toast.POSITION.TOP_CENTER
+                });
             } else if (username !== auth.user.username
                         && email !== auth.user.email
                         && err.response.data.error.includes('username') 
                         && err.response.data.error.includes('email')) {
-                setMessage('An account already exists with that username and email. Please try a different username and email.')
+                toast.error(<AlreadyExists user={true} email={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                }); 
                 setUsername('')
                 setEmail('')
             } else if (username !== auth.user.username
                         && err.response.data.error.includes('username')) {
-                setMessage('An account already exists with that username. Please try a different username.')
+                toast.error(<AlreadyExists user={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                });    
                 setUsername('')
             } else if (email !== auth.user.email
                         && err.response.data.error.includes('email')) {
-                setMessage('An account already exists with that email. Please try a different email.')
+                toast.error(<AlreadyExists email={true} />, {
+                    position: toast.POSITION.TOP_CENTER
+                });        
                 setEmail('')
             } else {
-                setMessage('Invalid credentials. Please try again.')
+                toast.error(<InvalidCredentials />, {
+                    position: toast.POSITION.TOP_CENTER
+                });
                 setName('')
                 setUsername('')
                 setEmail('')
@@ -70,80 +93,107 @@ const Account = () => {
             setPassword('')
             setConfirmPassword('')
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
+    
     return (
-        <div>
-            <h1>Account Details</h1>
-            <form onSubmit={handleSave}>
-                <label htmlFor='name'>Name:</label>
-                <input
-                    type='text'
-                    value={name}
-                    id='name'
-                    name='Name'
-                    placeholder='Name'
-                    onChange={(e) => setName(e.target.value)}
-                    autoComplete='off'
-                    required
-                />
-                <br />
-                <label htmlFor='username'>Username:</label>
-                <input
-                    type='text'
-                    value={username}
-                    id='username'
-                    name='Username'
-                    placeholder='Username'
-                    onChange={(e) => setUsername(e.target.value)}
-                    autoComplete='off'
-                    required
-                />
-                <br />
-                <label htmlFor='email'>Email:</label>
-                <input
-                    type='email'
-                    value={email}
-                    id='email'
-                    name='Email'
-                    placeholder='Email'
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete='off'
-                    required
-                />
-                <br />
-                <label htmlFor='password'>Password:</label>
-                <input
-                    type='password'
-                    value={password}
-                    id='password'
-                    name='Password'
-                    placeholder='Password'
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete='off'
-                    required
-                />
-                <br />
-                <label htmlFor='confirmPassword'>Confirm Password:</label>
-                <input
-                    type='password'
-                    value={confirmPassword}
-                    id='confirm-password'
-                    name='confirmPassword'
-                    placeholder='Confirm Password'
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    autoComplete='off'
-                    required
-                />
-                <br />
-                <button type='submit'>
-                    Save
-                </button>
-            </form>
-            <Notification message={message} />
+        <div className='relative flex flex-col justify-center'>
+            <div className='w-full mt-3 p-6 m-auto bg-base-100 border rounded-md shadow-md lg:max-w-xl'>
+                <h2 className='text-3xl font-semibold text-center'>
+                    Edit account details
+                </h2>
+                <form onSubmit={handleSave} className='form-control space-y-2'>
+                    <div>
+                        <label htmlFor='name' className='label'>
+                            <span className='text-base label-text'>
+                                Name
+                            </span>
+                        </label>
+                        <input
+                            type='text'
+                            value={name}
+                            id='name'
+                            name='Name'
+                            onChange={(e) => setName(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-primary'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='username' className='label'>
+                            <span className='text-base label-text'>
+                                Username
+                            </span>
+                        </label>
+                        <input
+                            type='text'
+                            value={username}
+                            id='username'
+                            name='Username'
+                            onChange={(e) => setUsername(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-primary'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='email' className='label'>
+                            <span className='text-base label-text'>
+                                Email
+                            </span>
+                        </label>
+                        <input
+                            type='email'
+                            value={email}
+                            id='email'
+                            name='Email'
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-primary'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='password' className='label'>
+                            <span className='text-base label-text'>
+                                Password
+                            </span>
+                        </label>
+                        <input
+                            type='password'
+                            value={password}
+                            id='password'
+                            name='Password'
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-primary'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='confirmPassword' className='label'>
+                            <span className='text-base label-text'>
+                                Confirm Password
+                            </span>
+                        </label>
+                        <input
+                            type='password'
+                            value={confirmPassword}
+                            id='confirm-password'
+                            name='confirmPassword'
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            autoComplete='off'
+                            required
+                            className='w-full input input-bordered input-primary'
+                        />
+                    </div>
+                    <button type='submit' className='btn btn-block btn-primary'>
+                        Save changes
+                    </button>
+                </form>
+                <ToastContainer />
+            </div>
         </div>
     )
 }

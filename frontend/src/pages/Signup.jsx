@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"
 
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
@@ -9,7 +9,7 @@ import loginService from '../services/login'
 import signupService from '../services/signup'
 import NoServerResponse from '../components/NoServerResponse'
 import AlreadyExists from '../components/AlreadyExists'
-import NoMatchPassword from '../components/NoMatchPasswords'
+import NoMatchPasswords from '../components/NoMatchPasswords'
 import InvalidCredentials from '../components/InvalidCredentials'
 
 const Signup = () => {
@@ -26,17 +26,17 @@ const Signup = () => {
         event.preventDefault()
         try {
             if (!name || !username || !email || !password || !confirmPassword) {
-                toast.warn('Missing required field(s)', {
+                toast.warn('Missing required field(s).', {
                     position: toast.POSITION.TOP_CENTER
                 });
             } else if (password.length < 8 || confirmPassword.length < 8) {
-                toast.warn('Password must be at least 8 characters', {
+                toast.warn('Password must be at least 8 characters.', {
                     position: toast.POSITION.TOP_CENTER
                 });
                 setPassword('')
                 setConfirmPassword('')
             } else if (password !== confirmPassword) {
-                toast.warn(<NoMatchPassword />, {
+                toast.warn(<NoMatchPasswords />, {
                     position: toast.POSITION.TOP_CENTER
                 });
                 setPassword('')
