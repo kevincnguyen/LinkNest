@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types'
 
 const ProfilePicture = ({ src }) => {
+    
     return (
-        <img
-            src={src}
-            alt='Profile Picture'
-            style={{ width: '40%' }}
-        />
+        <div className="avatar">
+            <div className="w-28 rounded-full">
+                <img
+                    src={src}
+                    alt='Profile Picture'
+                />
+            </div>
+        </div>
     )
 }
 

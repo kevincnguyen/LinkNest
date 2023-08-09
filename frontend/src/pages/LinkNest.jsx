@@ -7,6 +7,7 @@ import ProfilePicture from '../components/ProfilePicture'
 import Title from '../components/Title'
 import Bio from '../components/Bio'
 import DisplayLinks from '../components/DisplayLinks'
+import Icons from '../components/Icons.jsx'
 import Logo from '../components/Logo'
 import Loading from '../components/Loading'
 
@@ -43,13 +44,16 @@ const LinkNest = () => {
     }
 
     return (
-        <>
-            <ProfilePicture src={profilePicture} />
-            <Title text={user.title} />
-            {user.bio && <Bio text={user.bio} />}
-            {user.links && <DisplayLinks links={user.links} />}
-            <Logo />
-        </>
+        <div className="h-screen bg-gradient-to-tr from-indigo-200 via-red-200 to-yellow-100">
+            <div className="flex flex-col items-center justify-center mx-auto max-w-2xl w-full pt-16 px-8">
+                <ProfilePicture src={profilePicture} />
+                <Title text={user.title} />
+                {user.bio && <Bio text={user.bio} />}
+                {user.links && <DisplayLinks links={user.links} />}
+                {user.links && <Icons links={user.links} />}
+                <Logo />
+            </div>
+        </div>
     )
 }
 

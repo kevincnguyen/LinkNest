@@ -7,7 +7,7 @@ const Dashboard = () => {
     return (
         <div className='flex flex-col justify-center items-center'>
             <div className='flex flex-col justify-start items-start w-3/5'>  
-                <h1 className='text-5xl text-accent-content font-bold mt-8 mb-10'>
+                <h1 className='text-5xl text-accent-content font-bold mt-14 mb-10 break-words'>
                     Welcome to LinkNest, {auth.user.name}
                     <Emoji symbol='👋' label='hand-wave'/>
                 </h1>

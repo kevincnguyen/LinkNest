@@ -22,34 +22,43 @@ const Appearance = () => {
         if (auth.user.bio) {
             setBio(auth.user.bio)   
         }
-        const getProfilePic = async () => {
-            try {
-                const response = await usersService.getProfilePic(auth.user.username)
-                setImage(URL.createObjectURL(response) || Default)
-            } catch (err) {
-                console.error('error: ', err)
-                if (!err.response) {
-                    setMessage('No server response')
-                } else {
-                    setMessage('Unable to load profile picture. Please try again.')
+        if (image !== auth.user.profilepic) {
+            const getProfilePic = async () => {
+                try {
+                    const response = await usersService.getProfilePic(auth.user.username)
+                    setImage(URL.createObjectURL(response) || Default)
+                } catch (err) {
+                    console.error('error: ', err)
+                    if (!err.response) {
+                        setMessage('No server response')
+                    } else {
+                        setMessage('Unable to load profile picture. Please try again.')
+                    }
                 }
             }
+            getProfilePic()
         }
-        getProfilePic()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.user.title, auth.user.bio, auth.user.profilepic])
 
     const handleSave = async (event) => {
         event.preventDefault()
         try {
-            if (!title || !file) {
-                setMessage('Missing required field(s)')
+            if (!title) {
+                setMessage('Missing required field(s): title')
             } else {
-                const formData = new FormData();
-                formData.append("title", title);
-                formData.append("bio", bio);
-                formData.append("profilepic", file);
-                const updatedUser = await usersService.upload(auth.user.id, formData, axiosPrivate)
+                let updatedUser;
+                if (file) {
+                    const formData = new FormData();
+                    formData.append("title", title);
+                    formData.append("bio", bio);
+                    formData.append("profilepic", file);
+                    updatedUser = await usersService.upload(auth.user.id, formData, axiosPrivate)
+                } else {
+                    updatedUser = await usersService.update(auth.user.id, { 
+                        title, bio
+                    }, axiosPrivate)
+                }
                 setAuth({ user: updatedUser, accessToken: auth.accessToken})
                 setMessage('Profile successfully updated')
             }
@@ -88,7 +97,6 @@ const Appearance = () => {
                     name='profilepic'
                     accept='image/jpeg, image/jpg, image/png'
                     onChange={handleFileUpload}
-                    required
                 />
                 <br />
                 <label htmlFor='title'>Profile Title:</label>

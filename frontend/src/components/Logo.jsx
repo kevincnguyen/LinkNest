@@ -4,8 +4,8 @@ import Emoji from "./Emoji"
 
 const Logo = () => {
     return (
-        <Link to='/'>
-            <p>
+        <Link to='/' className='text-black text-lg font-semibold mt-12'>
+            <p className='hover:text-accent'>
                 <Emoji symbol='🪹' label='nest' />
                 LinkNest
             </p>

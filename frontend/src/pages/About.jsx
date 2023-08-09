@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import Photo from '../assets/kevin.jpg'
 import Emoji from '../components/Emoji'
 
@@ -23,11 +22,16 @@ const About = () => {
                         <br />
                         Check out my LinkNest:
                     </p>
-                    <Link to='/kevin' className='card-actions'>
+                    <a 
+                        href='http://localhost:3000/kevin' 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className='card-actions'
+                    >
                         <button className='btn btn-block btn-accent font-bold'>
                             Connect with me
                         </button>
-                    </Link>
+                    </a>
                 </div>
             </div>
         </div>
