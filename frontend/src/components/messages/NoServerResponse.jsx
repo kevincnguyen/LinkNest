@@ -1,7 +1,7 @@
 const NoServerResponse = () => {
     return (
         <>
-            Invalid username or password.
+            No server response.
             <br />
             Please reload.
         </>

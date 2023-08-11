@@ -9,7 +9,7 @@ const PreviewLinks = () => {
         <div className='w-[90%]'>
             {links.map(link => (
                 <PreviewLink
-                    key={link.url}
+                    key={link.id}
                     url={link.url}
                     desc={link.desc}
                 />

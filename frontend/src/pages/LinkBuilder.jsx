@@ -1,26 +1,53 @@
 import { useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { StrictModeDroppable } from '../components/StrictModeDroppable'
 import linksService from '../services/links'
-import LinkCard from '../components/LinkCard'
-import AddLinkForm from '../components/AddLinkForm'
-import AddLinkButton from '../components/AddLinkButton'
-import Notification from '../components/Notification'
+import usersService from '../services/users'
+import { PreviewContext } from '../context/PreviewContext'
+
+import LinkCard from '../components/builder/LinkCard'
+import AddLinkForm from '../components/builder/AddLinkForm'
+import AddLinkButton from '../components/builder/AddLinkButton'
+import { StrictModeDroppable } from '../components/builder/StrictModeDroppable'
+import UnableSave from '../components/messages/UnableSave'
+import UnableLoad from '../components/messages/UnableLoad'
+import PhonePreview from "../components/preview/PhonePreview"
+import NoServerResponse from '../components/messages/NoServerResponse'
 
 const LinkBuilder = () => {
     const axiosPrivate = useAxiosPrivate()
     const { auth, setAuth } = useAuth()
     const [links, setLinks] = useState([])
-    const [visible, setVisible] = useState(false)
-    const [message, setMessage] = useState(null)
+    const [image, setImage] = useState(null)
 
     useEffect(() => {
         const sortedLinks = auth.user.links.sort((a, b) => a.position - b.position)
         setLinks(sortedLinks)
-    }, [auth.user.links])
+        const getProfilePic = async () => {
+            try {
+                const response = await usersService.getProfilePic(auth.user.username)
+                setImage(URL.createObjectURL(response))
+            } catch (err) {
+                console.error('error: ', err)
+                if (!err.response) {
+                    toast.error(<NoServerResponse />, {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                } else {
+                    toast.error(<UnableLoad />, {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
+            }
+        }
+        getProfilePic()
+    }, [auth.user.links, auth.user.username])
 
     const handleDragEnd = async (result) => {
         if (!result.destination) return;
@@ -29,31 +56,12 @@ const LinkBuilder = () => {
             const updatedLinks = [...links];
             const [movedLink] = updatedLinks.splice(source.index, 1)
             updatedLinks.splice(destination.index, 0, movedLink)
-            updatedLinks.forEach((link, index) => {
-                link.position = index
-            })
             try {
-                setLinks(updatedLinks)
-                await Promise.all(updatedLinks.map(async (link, index) => {
-                    if (links[index].id !== updatedLinks[index].id) {
-                        await linksService.update(updatedLinks[index].id,
-                                                    { position: updatedLinks[index].position},
-                                                    axiosPrivate)
-                    }
-                }))
-                setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
+                updatePositions(updatedLinks)
             } catch (err) {
-                console.log('error: ', err)
-                if (!err.response) {
-                    setMessage('No server response')
-                } else {
-                    setMessage('Unable to save changes. Please try again.')
-                }
+                showError(err)
             }
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
     const handleAdd = async (desc, url) => {
@@ -70,95 +78,110 @@ const LinkBuilder = () => {
             setLinks(updatedLinks)
             setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
         } catch (err) {
-            console.log('error: ', err)
-            if (!err.response) {
-                setMessage('No server response')
-            } else {
-                setMessage('Unable to save changes. Please try again.')
-            }
+            showError(err)
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
     const handleSave = async (id, desc, url) => {
         try {
             const updatedLink = await linksService.update(id, { desc, url }, axiosPrivate) 
-            const updatedLinks = links.map(link => link.id == id ? updatedLink : link);
+            const updatedLinks = links.map(link => link.id === id ? updatedLink : link);
             setLinks(updatedLinks)
             setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
         } catch (err) {
-            console.log('error: ', err)
-            if (!err.response) {
-                setMessage('No server response')
-            } else {
-                setMessage('Unable to save changes. Please try again.')
-            }
+            showError(err)
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
     const handleDelete = async (id) => {
-        if (window.confirm('Delete this forever?')) {
+        const result = await Swal.fire({
+            title: 'Delete this forever?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if (result.isConfirmed) {
             try {
                 await linksService.remove(id, axiosPrivate)
                 const updatedLinks = auth.user.links.filter(l => l.id !== id)
-                updatedLinks.forEach((link, index) => {
-                    link.position = index
-                })
-                setLinks(updatedLinks)
-                await Promise.all(updatedLinks.map(async (link, index) => {
-                    if (links[index].id !== updatedLinks[index].id) {
-                        await linksService.update(updatedLinks[index].id,
-                                                    { position: updatedLinks[index].position},
-                                                    axiosPrivate)
-                    }
-                }))
-                setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
+                updatePositions(updatedLinks)
             } catch (err) {
-                console.log('error: ', err)
-                if (!err.response) {
-                    setMessage('No server response')
-                } else {
-                    setMessage('Unable to save changes. Please try again.')
-                }
+                showError(err)
             }
         }
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
     }
 
-    const toggleVisibility = () => {
-        setVisible((prev) => !prev)
+    const updatePositions = async (updatedLinks) => {
+        updatedLinks.forEach((link, index) => {
+            link.position = index
+        })
+        setLinks(updatedLinks)
+        await Promise.all(updatedLinks.map(async (link, index) => {
+            if (links[index].id !== updatedLinks[index].id) {
+                await linksService.update(updatedLinks[index].id,
+                                            { position: updatedLinks[index].position},
+                                            axiosPrivate)
+            }
+        }))
+        setAuth({ ...auth, user: { ...auth.user, links: updatedLinks }})
+    }
+
+    const showError = (err) => {
+        console.log('error: ', err)
+        if (!err.response) {
+            toast.error(<NoServerResponse />, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } else {
+            toast.error(<UnableSave />, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
     }
 
     return (
-        <div>
-            {!visible && <AddLinkButton hide={toggleVisibility} />}
-            {visible && <AddLinkForm handleAdd={handleAdd} hide={toggleVisibility} />}
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <StrictModeDroppable droppableId='links-list'>
-                    {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                            {links.map((link, index) => (
-                                <LinkCard
-                                    key={link.id}
-                                    link={link}
-                                    index={index}
-                                    handleSave={handleSave}
-                                    handleDelete={handleDelete}
-                                />
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </StrictModeDroppable>
-            </DragDropContext>
-            <Notification message={message} />
+        <div className='flex flex-col md:flex-row h-full bg-base-200'>
+            <div className="left-side flex flex-col items-center border-b-2 border-b-base-300 pb-8
+                            md:w-3/5 md:max-w-3/5 md:border-r-2 md:border-r-base-300 md:border-b-0">
+                <AddLinkButton />
+                <AddLinkForm handleAdd={handleAdd} />
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <StrictModeDroppable droppableId='links-list'>
+                        {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef} className='w-3/5'>
+                                {links.map((link, index) => (
+                                    <LinkCard
+                                        key={link.id}
+                                        link={link}
+                                        index={index}
+                                        handleSave={handleSave}
+                                        handleDelete={handleDelete}
+                                    />
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </StrictModeDroppable>
+                </DragDropContext>
+            </div>
+            <div className="right-side flex flex-col items-center md:w-2/5 md:max-w-2/5">
+                <div className="w-3/5 mt-8 mb-10">
+                    <PreviewContext.Provider 
+                        value={{
+                            image,
+                            title: auth.user.title, 
+                            bio: auth.user.bio, 
+                            links
+                        }}
+                    >
+                        <PhonePreview />
+                    </PreviewContext.Provider>
+                </div>
+            </div>
+            <ToastContainer />
         </div>
     )
 }
