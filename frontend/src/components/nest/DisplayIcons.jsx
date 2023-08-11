@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 
-import GitHubIcon from './icons/GitHubIcon'
-import LinkedinIcon from './icons/LinkedinIcon'
-import InstagramIcon from './icons/InstagramIcon'
-import YouTubeIcon from './icons/YouTubeIcon'
-import FacebookIcon from './icons/FacebookIcon'
+import GitHubIcon from '../icons/GitHubIcon'
+import LinkedinIcon from '../icons/LinkedinIcon'
+import InstagramIcon from '../icons/InstagramIcon'
+import YouTubeIcon from '../icons/YouTubeIcon'
+import FacebookIcon from '../icons/FacebookIcon'
 
-const Icons = ({ links }) => {
+const DisplayIcons = ({ links }) => {
     return (
         <div className="flex items-center gap-4 mt-2 text-white">
             {links.map((link) => (
@@ -34,8 +34,8 @@ const Icons = ({ links }) => {
     ) 
 }
 
-Icons.propTypes = {
+DisplayIcons.propTypes = {
     links: PropTypes.links
 }
 
-export default Icons
+export default DisplayIcons

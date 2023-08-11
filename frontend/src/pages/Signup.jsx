@@ -7,10 +7,10 @@ import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import loginService from '../services/login'
 import signupService from '../services/signup'
-import NoServerResponse from '../components/NoServerResponse'
-import AlreadyExists from '../components/AlreadyExists'
-import NoMatchPasswords from '../components/NoMatchPasswords'
-import InvalidCredentials from '../components/InvalidCredentials'
+import NoServerResponse from '../components/messages/NoServerResponse'
+import AlreadyExists from '../components/messages/AlreadyExists'
+import NoMatchPasswords from '../components/messages/NoMatchPasswords'
+import InvalidCredentials from '../components/messages/InvalidCredentials'
 
 const Signup = () => {
     const navigate = useNavigate()

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
-import AdminNavBar from "../components/AdminNavBar"
-import ProtectedRoute from '../components/ProtectedRoute'
+import AdminNavBar from "../nav/AdminNavBar"
+import ProtectedRoute from '../ProtectedRoute'
 
 const AdminLayout = () => {
     return (

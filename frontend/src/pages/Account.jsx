@@ -5,10 +5,10 @@ import "react-toastify/dist/ReactToastify.css"
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import usersService from '../services/users'
-import AlreadyExists from '../components/AlreadyExists'
-import NoMatchPasswords from '../components/NoMatchPasswords'
-import NoServerResponse from '../components/NoServerResponse'
-import InvalidCredentials from '../components/InvalidCredentials'
+import AlreadyExists from '../components/messages/AlreadyExists'
+import NoMatchPasswords from '../components/messages/NoMatchPasswords'
+import NoServerResponse from '../components/messages/NoServerResponse'
+import InvalidCredentials from '../components/messages/InvalidCredentials'
 
 const Account = () => {
     const { auth, setAuth } = useAuth()

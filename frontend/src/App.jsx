@@ -10,8 +10,8 @@ import Account from './pages/Account'
 import NotFound from './pages/NotFound'
 import LinkNest from './pages/LinkNest'
 import Dashboard from './pages/Dashboard'
-import HomeLayout from './layouts/HomeLayout'
-import AdminLayout from './layouts/AdminLayout'
+import HomeLayout from './components/layouts/HomeLayout'
+import AdminLayout from './components/layouts/AdminLayout'
 
 const App = () => {
   return (

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const InvalidCredentials = ({ user, email }) => {
+const AlreadyExists = ({ user, email }) => {
     let output = user && email ? 'username and email' : email ? 'email' : 'username';
 
     return (
@@ -12,9 +12,9 @@ const InvalidCredentials = ({ user, email }) => {
     )
 }
 
-InvalidCredentials.propTypes = {
+AlreadyExists.propTypes = {
     user: PropTypes.bool,
     email: PropTypes.bool
 }
 
-export default InvalidCredentials
+export default AlreadyExists

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"
 
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import loginService from '../services/login'
-import InvalidCredentials from '../components/InvalidCredentials'
-import NoServerResponse from '../components/NoServerResponse'
+import InvalidCredentials from '../components/messages/InvalidCredentials'
+import NoServerResponse from '../components/messages/NoServerResponse'
 
 const Login = () => {
     const navigate = useNavigate()

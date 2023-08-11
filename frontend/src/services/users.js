@@ -17,7 +17,6 @@ const update = async (id, updatedUser, axiosPrivate) => {
 }
 
 const upload = async (id, updatedUser, axiosPrivate) => {
-    console.log(axiosPrivate.defaults.headers['Content-Type'])
     axiosPrivate.defaults.headers['Content-Type'] = 'multipart/form-data'
     const response = await axiosPrivate.put(`${baseUrl}/${id}`, updatedUser)
     return response.data

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import Emoji from "./Emoji"
+import Emoji from "../Emoji"
 
-const Logo = () => {
+const DisplayLogo = () => {
     return (
         <Link to='/' className='text-black text-lg font-semibold mt-12'>
             <p className='hover:text-accent'>
@@ -13,4 +13,4 @@ const Logo = () => {
     )
 }
 
-export default Logo
+export default DisplayLogo
