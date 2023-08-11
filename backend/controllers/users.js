@@ -70,7 +70,9 @@ usersRouter.put('/:id', middleware.verifyJWT, upload.single('profilepic'), async
     req.params.id,
     user,
     { new: true, runValidators: true, context: 'query' },
-  );
+  ).populate('links', {
+    id: 1, url: 1, desc: 1, position: 1,
+  });
 
   res.json(updatedUser);
 });
