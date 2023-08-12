@@ -1,4 +1,4 @@
 /backend/.env
 /backend/requests
 /backend/uploads
-.vscode
+/frontend/.vscode
