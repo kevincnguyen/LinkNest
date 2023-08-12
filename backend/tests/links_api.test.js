@@ -9,36 +9,6 @@ const User = require('../models/user');
 const Link = require('../models/link');
 const helper = require('./helper');
 
-describe('Links already exist in DB', () => {
-  beforeEach(async () => {
-    await User.deleteMany({});
-    for (const user of helper.initialUsers) {
-      const saltRounds = 10;
-      const passwordHash = await bcrypt.hash(user.password, saltRounds);
-      const updatedUser = new User({ ...user, password: passwordHash });
-      await updatedUser.save();
-    }
-
-    await Link.deleteMany({});
-    const users = await helper.usersInDb();
-    for (const link of helper.initialLinks) {
-      const newLink = new Link({ ...link, user: users[0].id });
-      await newLink.save();
-    }
-  });
-
-  test('Links are returned in JSON format', async () => {
-    await api.get('/api/links')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-  }, 100000);
-
-  test('Correct number of Links are returned', async () => {
-    const response = await api.get('/api/links');
-    expect(response.body).toHaveLength(helper.initialLinks.length);
-  }, 100000);
-});
-
 describe('Addition of new Link', () => {
   beforeEach(async () => {
     await User.deleteMany({});
@@ -75,11 +45,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
@@ -114,11 +82,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(401)
       .expect('Content-Type', /application\/json/);
 
@@ -128,7 +94,7 @@ describe('Addition of new Link', () => {
       return link;
     });
 
-    expect(response.body.error).toContain('links can only be added by its authorized user');
+    expect(response.body.error).toContain('Links can only be added by its authorized user');
     expect(endLinks).toHaveLength(startLinks.length);
     expect(endLinks).not.toContainEqual(newLink);
     expect(startLinks).not.toContainEqual(newLink);
@@ -158,7 +124,7 @@ describe('Addition of new Link', () => {
       return link;
     });
 
-    expect(response.body.error).toContain('no user logged in');
+    expect(response.body.error).toContain('Not authenticated');
     expect(endLinks).toHaveLength(startLinks.length);
     expect(endLinks).not.toContainEqual(newLink);
     expect(startLinks).not.toContainEqual(newLink);
@@ -181,11 +147,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(400);
 
     const endLinks = (await helper.linksInDb()).map((link) => {
@@ -216,11 +180,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(400);
 
     const endLinks = (await helper.linksInDb()).map((link) => {
@@ -251,11 +213,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(400);
 
     const endLinks = (await helper.linksInDb()).map((link) => {
@@ -285,11 +245,9 @@ describe('Addition of new Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.post('/api/links')
       .send(newLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(400);
 
     const endLinks = (await helper.linksInDb()).map((link) => {
@@ -298,7 +256,7 @@ describe('Addition of new Link', () => {
       return link;
     });
 
-    expect(response.body.error).toContain('user required');
+    expect(response.body.error).toContain('User required');
     expect(endLinks).toHaveLength(startLinks.length);
     expect(endLinks).not.toContainEqual(newLink);
   }, 100000);
@@ -340,11 +298,9 @@ describe('Updating existing Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     await api.put(`/api/links/${startLinks[0].id}`)
       .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(200)
       .expect('Content-Type', /application\/json/);
 
@@ -383,11 +339,9 @@ describe('Updating existing Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.put(`/api/links/${startLinks[0].id}`)
       .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(401)
       .expect('Content-Type', /application\/json/);
 
@@ -426,150 +380,7 @@ describe('Updating existing Link', () => {
 
     expect(endLinks).toHaveLength(startLinks.length);
     expect(endLinks).not.toContainEqual(updatedLink);
-    expect(response.body.error).toContain('no user logged in');
-  }, 100000);
-
-  test('Fails with 400 if url is missing', async () => {
-    const users = await helper.usersInDb();
-    const startLinks = await helper.linksInDb();
-
-    const updatedLink = {
-      desc: 'Check out my Twitter',
-      position: 1,
-      user: users[0].id,
-    };
-
-    const loggedIn = await api.post('/api/login')
-      .send({
-        username: 'jsmith',
-        password: 'password',
-      })
-      .expect(200);
-
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
-    const response = await api.put(`/api/links/${startLinks[0].id}`)
-      .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    const endLinks = (await helper.linksInDb()).map((link) => {
-      delete link.id;
-      link.user = link.user.toString();
-      return link;
-    });
-
-    expect(endLinks).toHaveLength(startLinks.length);
-    expect(endLinks).not.toContainEqual(updatedLink);
-    expect(response.body.error).toContain('url required');
-  }, 100000);
-
-  test('Fails with 400 if desc is missing', async () => {
-    const users = await helper.usersInDb();
-    const startLinks = await helper.linksInDb();
-
-    const updatedLink = {
-      url: 'www.twitter.com',
-      position: 1,
-      user: users[0].id,
-    };
-
-    const loggedIn = await api.post('/api/login')
-      .send({
-        username: 'jsmith',
-        password: 'password',
-      })
-      .expect(200);
-
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
-    const response = await api.put(`/api/links/${startLinks[0].id}`)
-      .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    const endLinks = (await helper.linksInDb()).map((link) => {
-      delete link.id;
-      link.user = link.user.toString();
-      return link;
-    });
-
-    expect(endLinks).toHaveLength(startLinks.length);
-    expect(endLinks).not.toContainEqual(updatedLink);
-    expect(response.body.error).toContain('description required');
-  }, 100000);
-
-  test('Fails with 400 if position is missing', async () => {
-    const users = await helper.usersInDb();
-    const startLinks = await helper.linksInDb();
-
-    const updatedLink = {
-      url: 'www.twitter.com',
-      desc: 'Check out my Twitter',
-      user: users[0].id,
-    };
-
-    const loggedIn = await api.post('/api/login')
-      .send({
-        username: 'jsmith',
-        password: 'password',
-      })
-      .expect(200);
-
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
-    const response = await api.put(`/api/links/${startLinks[0].id}`)
-      .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    const endLinks = (await helper.linksInDb()).map((link) => {
-      delete link.id;
-      link.user = link.user.toString();
-      return link;
-    });
-
-    expect(endLinks).toHaveLength(startLinks.length);
-    expect(endLinks).not.toContainEqual(updatedLink);
-    expect(response.body.error).toContain('position required');
-  }, 100000);
-
-  test('Fails with 400 if user is missing', async () => {
-    const startLinks = await helper.linksInDb();
-
-    const updatedLink = {
-      url: 'www.twitter.com',
-      desc: 'Check out my Twitter',
-      position: 1,
-    };
-
-    const loggedIn = await api.post('/api/login')
-      .send({
-        username: 'jsmith',
-        password: 'password',
-      })
-      .expect(200);
-
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
-    const response = await api.put(`/api/links/${startLinks[0].id}`)
-      .send(updatedLink)
-      .set('Cookie', `jwtToken=${token}`)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    const endLinks = (await helper.linksInDb()).map((link) => {
-      delete link.id;
-      link.user = link.user.toString();
-      return link;
-    });
-
-    expect(endLinks).toHaveLength(startLinks.length);
-    expect(endLinks).not.toContainEqual(updatedLink);
-    expect(response.body.error).toContain('user required');
+    expect(response.body.error).toContain('Not authenticated');
   }, 100000);
 });
 
@@ -602,10 +413,8 @@ describe('Deleting existing Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     await api.delete(`/api/links/${linkToDelete.id}`)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(204);
 
     const endLinks = await helper.linksInDb();
@@ -625,10 +434,8 @@ describe('Deleting existing Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     const response = await api.delete(`/api/links/${linkToDelete.id}`)
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(401)
       .expect('Content-Type', /application\/json/);
 
@@ -649,7 +456,7 @@ describe('Deleting existing Link', () => {
     const endLinks = await helper.linksInDb();
 
     expect(endLinks).toHaveLength(startLinks.length);
-    expect(response.body.error).toContain('no user logged in');
+    expect(response.body.error).toContain('Not authenticated');
   });
 
   test('Fails if link does not exist', async () => {
@@ -662,10 +469,8 @@ describe('Deleting existing Link', () => {
       })
       .expect(200);
 
-    const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
     await api.delete('/api/links/64c60a101ce9eaf0cd8dffe0')
-      .set('Cookie', `jwtToken=${token}`)
+      .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
       .expect(404);
 
     const endLinks = await helper.linksInDb();

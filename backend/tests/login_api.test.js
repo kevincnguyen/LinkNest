@@ -29,7 +29,7 @@ describe('User already exists', () => {
     await user.save();
   });
 
-  test('Login successful with correct credentials and sets jwtToken cookie', async () => {
+  test('Login successful with correct credentials', async () => {
     const response = await api.post('/api/login')
       .send({
         username: 'jsmith',
@@ -37,10 +37,7 @@ describe('User already exists', () => {
       })
       .expect(200)
       .expect('Content-Type', /application\/json/);
-    const token = response.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
     expect(response.body.message).toBe('Login successful');
-    expect(response.headers['set-cookie']).toBeDefined();
-    expect(response.headers['set-cookie'][0]).toContain(`jwtToken=${token}`);
   }, 100000);
 
   test('Login unsuccessful with incorrect credentials', async () => {

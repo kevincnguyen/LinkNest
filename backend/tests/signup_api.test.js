@@ -155,7 +155,6 @@ describe('Addition of user', () => {
 
   test('Fails with 400 if email already exists', async () => {
     const startUsers = await helper.usersInDb();
-    const startEmails = startUsers.map((u) => u.email);
 
     const newUser = {
       name: 'John Smith',
@@ -163,8 +162,6 @@ describe('Addition of user', () => {
       email: 'johnsmith@gmail.com',
       password: 'password',
     };
-
-    expect(startEmails).toContain('johnsmith@gmail.com');
 
     const result = await api
       .post('/api/signup')

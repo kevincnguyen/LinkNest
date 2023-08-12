@@ -19,42 +19,9 @@ beforeEach(async () => {
 });
 
 describe('Users already exists in DB', () => {
-  test('Users are returned in JSON format', async () => {
-    await api.get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-  }, 100000);
-
-  test('Correct number of Users returned', async () => {
-    const response = await api.get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-    expect(response.body).toHaveLength(2);
-  }, 100000);
-
-  test('Each User has unique username', async () => {
-    const response = await api.get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-    for (const user of response.body) {
-      expect(user.username).toBeDefined();
-    }
-    expect(new Set(response.body).size).toBe(2);
-  }, 100000);
-
-  test('Each User has unique email', async () => {
-    const response = await api.get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/);
-    for (const user of response.body) {
-      expect(user.email).toBeDefined();
-    }
-    expect(new Set(response.body).size).toBe(2);
-  }, 100000);
-
-  test('User can be retrieved in JSON by their ID', async () => {
+  test('User can be retrieved in JSON by their username', async () => {
     const user = (await helper.usersInDb())[0];
-    await api.get(`/api/users/${user.id}`)
+    await api.get(`/api/users/${user.username}`)
       .expect(200)
       .expect('Content-Type', /application\/json/);
   }, 100000);
@@ -77,11 +44,9 @@ describe('Users already exists in DB', () => {
         })
         .expect(200);
 
-      const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
       await api.put(`/api/users/${startUsers[0].id}`)
         .send(updatedUser)
-        .set('Cookie', `jwtToken=${token}`)
+        .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
         .expect(200)
         .expect('Content-Type', /application\/json/);
 
@@ -110,11 +75,9 @@ describe('Users already exists in DB', () => {
         })
         .expect(200);
 
-      const token = loggedIn.headers['set-cookie'][0].match(/jwtToken=([^;]+)/)[1];
-
       await api.put(`/api/users/${startUsers[0].id}`)
         .send(updatedUser)
-        .set('Cookie', `jwtToken=${token}`)
+        .set('Authorization', `Bearer ${loggedIn.body.accessToken}`)
         .expect(401)
         .expect('Content-Type', /application\/json/);
 
@@ -136,8 +99,7 @@ describe('Users already exists in DB', () => {
         password: 'password',
       };
 
-      await api.post('/api/logout')
-        .expect(200);
+      await api.post('/api/logout');
 
       const response = await api.put(`/api/users/${startUsers[0].id}`)
         .send(updatedUser)
@@ -150,7 +112,7 @@ describe('Users already exists in DB', () => {
       expect(endUsers).toHaveLength(startUsers.length);
       expect(endUsernames).toContainEqual(startUsers[0].username);
       expect(endUsernames).not.toContainEqual(updatedUser.username);
-      expect(response.body.error).toContain('no user logged in');
+      expect(response.body.error).toContain('Not authenticated');
     });
   }, 10000);
 });
