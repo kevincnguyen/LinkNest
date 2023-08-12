@@ -8,7 +8,9 @@ const getInfo = async (username) => {
 };
 
 const getProfilePic = async (username) => {
-  const response = await axios.get(`${baseUrl}/${username}/image`, { responseType: 'blob' });
+  const response = await axios.get(`${baseUrl}/${username}/image`, {
+    responseType: 'blob',
+  });
   return response.data;
 };
 
@@ -25,5 +27,8 @@ const upload = async (id, updatedUser, axiosPrivate) => {
 };
 
 export default {
-  getInfo, getProfilePic, update, upload,
+  getInfo,
+  getProfilePic,
+  update,
+  upload,
 };

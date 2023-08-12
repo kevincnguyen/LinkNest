@@ -7,9 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PencilIcon from '../icons/PencilIcon';
 import DeleteButton from './DeleteButton';
 
-function LinkCard({
-  link, index, handleSave, handleDelete,
-}) {
+function LinkCard({ link, index, handleSave, handleDelete }) {
   const [desc, setDesc] = useState(link.desc);
   const [url, setUrl] = useState(link.url);
   const [isDFocused, setIsDFocused] = useState(false);
@@ -44,10 +42,17 @@ function LinkCard({
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            className="card card-side card-compact bg-base-100 mb-3 shadow-md"
+            className="card card-side card-compact mb-3 bg-base-100 shadow-md"
           >
-            <div {...provided.dragHandleProps} className="flex justify-center items-center px-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24">
+            <div
+              {...provided.dragHandleProps}
+              className="flex items-center justify-center px-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+              >
                 <path d="M0 0h24v24H0V0z" fill="none" />
                 <path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
               </svg>
@@ -64,7 +69,9 @@ function LinkCard({
                   onBlur={handleDBlur}
                   autoComplete="off"
                   required
-                  className={`w-full max-w-full !outline-none text-base font-medium cursor-${isDFocused ? 'text' : 'pointer'}`}
+                  className={`w-full max-w-full text-base font-medium !outline-none cursor-${
+                    isDFocused ? 'text' : 'pointer'
+                  }`}
                 />
                 {isDFocused ? null : <PencilIcon />}
               </div>
@@ -79,7 +86,9 @@ function LinkCard({
                   onBlur={handleUBlur}
                   autoComplete="off"
                   required
-                  className={`w-full max-w-full !outline-none text-base cursor-${isUFocused ? 'text' : 'pointer'}`}
+                  className={`w-full max-w-full text-base !outline-none cursor-${
+                    isUFocused ? 'text' : 'pointer'
+                  }`}
                 />
                 {isUFocused ? null : <PencilIcon />}
               </div>

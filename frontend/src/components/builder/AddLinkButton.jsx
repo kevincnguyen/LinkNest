@@ -3,7 +3,7 @@ function AddLinkButton() {
     <button
       type="button"
       onClick={() => window.add_link_form.showModal()}
-      className="btn btn-primary mt-8 mb-4 w-3/5"
+      className="btn btn-primary mb-4 mt-8 w-3/5"
     >
       + Add link
     </button>

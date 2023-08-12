@@ -6,10 +6,10 @@ function ProtectedRoute({ children }) {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return (
-    auth.user
-      ? children
-      : <Navigate to="/login" state={{ from: location }} replace />
+  return auth.user ? (
+    children
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 }
 

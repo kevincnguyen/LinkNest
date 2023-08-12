@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function DisplayTitle({ text }) {
   return (
-    <h2 className="text-black text-xl w-full text-center font-bold mt-4 mb-2 break-words">
+    <h2 className="mb-2 mt-4 w-full break-words text-center text-xl font-bold text-black">
       {text}
     </h2>
   );

@@ -6,8 +6,8 @@ function DisplayLink({ url, desc }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex justify-center items-center text-center py-3 mb-4 w-full max-w-2xl shadow-md
-                       rounded-md hover:scale-105 transition-all font-semibold text-gray-700 bg-gray-100"
+      className="mb-4 flex w-full max-w-2xl items-center justify-center rounded-md bg-gray-100 py-3
+                       text-center font-semibold text-gray-700 shadow-md transition-all hover:scale-105"
     >
       {desc}
     </a>

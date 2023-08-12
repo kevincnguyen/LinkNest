@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function DisplayBio({ text }) {
   return (
-    <p className="text-black text-lg text-center font-semibold max-w-[85%] mb-6 break-words">
+    <p className="mb-6 max-w-[85%] break-words text-center text-lg font-semibold text-black">
       {text}
     </p>
   );

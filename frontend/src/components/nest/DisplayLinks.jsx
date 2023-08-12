@@ -7,11 +7,7 @@ function DisplayLinks({ links }) {
   return (
     <div className="w-full">
       {sortedLinks.map((link) => (
-        <DisplayLink
-          key={link.id}
-          url={link.url}
-          desc={link.desc}
-        />
+        <DisplayLink key={link.id} url={link.url} desc={link.desc} />
       ))}
     </div>
   );

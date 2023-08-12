@@ -26,12 +26,17 @@ function AddLinkForm({ handleAdd }) {
       <dialog id="add_link_form" className="modal">
         <div className="modal-box">
           <form method="dialog">
-            <button type="submit" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button
+              type="submit"
+              className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+            >
+              ✕
+            </button>
           </form>
           <form method="dialog" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="description" className="label">
-                <span className="text-lg font-semibold label-text">
+                <span className="label-text text-lg font-semibold">
                   Enter description
                 </span>
               </label>
@@ -49,7 +54,7 @@ function AddLinkForm({ handleAdd }) {
             </div>
             <div>
               <label htmlFor="url" className="label">
-                <span className="text-lg font-semibold label-text">
+                <span className="label-text text-lg font-semibold">
                   Enter URL
                 </span>
               </label>
@@ -71,9 +76,7 @@ function AddLinkForm({ handleAdd }) {
           </form>
         </div>
         <form method="dialog" className="modal-backdrop backdrop-blur-sm">
-          <button type="submit">
-            Close
-          </button>
+          <button type="submit">Close</button>
         </form>
       </dialog>
       <ToastContainer />

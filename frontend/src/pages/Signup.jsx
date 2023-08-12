@@ -43,11 +43,18 @@ function Signup() {
         setConfirmPassword('');
       } else {
         await signupService.signup({
-          name, username, email, password,
+          name,
+          username,
+          email,
+          password,
         });
-        const { user, accessToken } = await loginService.login({
-          username, password,
-        }, axiosPrivate);
+        const { user, accessToken } = await loginService.login(
+          {
+            username,
+            password,
+          },
+          axiosPrivate,
+        );
         setAuth({ user, accessToken });
         navigate('/admin/dashboard');
       }
@@ -57,8 +64,10 @@ function Signup() {
         toast.error(<NoServerResponse />, {
           position: toast.POSITION.TOP_CENTER,
         });
-      } else if (err.response.data.error.includes('username')
-                        && err.response.data.error.includes('email')) {
+      } else if (
+        err.response.data.error.includes('username') &&
+        err.response.data.error.includes('email')
+      ) {
         toast.error(<AlreadyExists user email />, {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -89,16 +98,14 @@ function Signup() {
 
   return (
     <div className="relative flex flex-col justify-center">
-      <div className="w-full mt-3 p-6 m-auto bg-base-100 border rounded-md shadow-md lg:max-w-xl">
-        <h2 className="text-3xl font-semibold text-center">
+      <div className="m-auto mt-3 w-full rounded-md border bg-base-100 p-6 shadow-md lg:max-w-xl">
+        <h2 className="text-center text-3xl font-semibold">
           Create an account
         </h2>
         <form onSubmit={handleSignup} className="form-control space-y-2">
           <div>
             <label htmlFor="name" className="label">
-              <span className="text-base label-text">
-                Name
-              </span>
+              <span className="label-text text-base">Name</span>
             </label>
             <input
               type="text"
@@ -108,14 +115,12 @@ function Signup() {
               onChange={(e) => setName(e.target.value)}
               autoComplete="off"
               required
-              className="w-full input input-bordered input-accent"
+              className="input input-bordered input-accent w-full"
             />
           </div>
           <div>
             <label htmlFor="username" className="label">
-              <span className="text-base label-text">
-                Username
-              </span>
+              <span className="label-text text-base">Username</span>
             </label>
             <input
               type="text"
@@ -125,14 +130,12 @@ function Signup() {
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="off"
               required
-              className="w-full input input-bordered input-accent"
+              className="input input-bordered input-accent w-full"
             />
           </div>
           <div>
             <label htmlFor="email" className="label">
-              <span className="text-base label-text">
-                Email
-              </span>
+              <span className="label-text text-base">Email</span>
             </label>
             <input
               type="email"
@@ -142,14 +145,12 @@ function Signup() {
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
               required
-              className="w-full input input-bordered input-accent"
+              className="input input-bordered input-accent w-full"
             />
           </div>
           <div>
             <label htmlFor="password" className="label">
-              <span className="text-base label-text">
-                Password
-              </span>
+              <span className="label-text text-base">Password</span>
             </label>
             <input
               type="password"
@@ -159,14 +160,12 @@ function Signup() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="off"
               required
-              className="w-full input input-bordered input-accent"
+              className="input input-bordered input-accent w-full"
             />
           </div>
           <div>
             <label htmlFor="confirmPassword" className="label">
-              <span className="text-base label-text">
-                Confirm Password
-              </span>
+              <span className="label-text text-base">Confirm Password</span>
             </label>
             <input
               type="password"
@@ -176,16 +175,19 @@ function Signup() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="off"
               required
-              className="w-full input input-bordered input-accent"
+              className="input input-bordered input-accent w-full"
             />
           </div>
-          <button type="submit" className="btn btn-block btn-accent">
+          <button type="submit" className="btn btn-accent btn-block">
             Create account
           </button>
         </form>
-        <div className="text-sm mt-2">
+        <div className="mt-2 text-sm">
           <span>Already have an account? </span>
-          <Link to="/login" className="text-secondary hover:text-secondary-focus">
+          <Link
+            to="/login"
+            className="text-secondary hover:text-secondary-focus"
+          >
             Log in
           </Link>
         </div>

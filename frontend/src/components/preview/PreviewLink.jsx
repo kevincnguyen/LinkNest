@@ -6,8 +6,8 @@ function PreviewLink({ url, desc }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-col justify-center items-center text-center text-sm p-1 mb-1 w-full shadow-md
-                    rounded-md hover:scale-105 transition-all font-semibold text-gray-700 bg-gray-100"
+      className="mb-1 flex w-full flex-col items-center justify-center rounded-md bg-gray-100 p-1 text-center
+                    text-sm font-semibold text-gray-700 shadow-md transition-all hover:scale-105"
     >
       {desc}
     </a>

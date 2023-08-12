@@ -4,7 +4,7 @@ import PreviewContext from '../../context/PreviewContext';
 function PreviewBio() {
   const { bio } = useContext(PreviewContext);
   return (
-    <p className="text-black text-sm text-center w-[75%] font-light mb-3 break-words">
+    <p className="mb-3 w-[75%] break-words text-center text-sm font-light text-black">
       {bio}
     </p>
   );

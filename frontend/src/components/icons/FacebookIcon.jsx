@@ -2,13 +2,11 @@ function Facebook() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-8 w-8 hover:scale-105 transition-all"
+      className="h-8 w-8 transition-all hover:scale-105"
       fill="currentColor"
       viewBox="0 0 24 24"
     >
-      <path
-        d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
-      />
+      <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
     </svg>
   );
 }

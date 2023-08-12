@@ -8,11 +8,7 @@ function PreviewLinks() {
   return (
     <div className="w-[90%]">
       {links.map((link) => (
-        <PreviewLink
-          key={link.id}
-          url={link.url}
-          desc={link.desc}
-        />
+        <PreviewLink key={link.id} url={link.url} desc={link.desc} />
       ))}
     </div>
   );

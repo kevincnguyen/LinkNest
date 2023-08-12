@@ -3,16 +3,16 @@ import Emoji from '../components/Emoji';
 
 function NotFound() {
   return (
-    <div className="flex items-center justify-center w-full min-h-[70vh] text-base-content my-12 px-4">
-      <div className="flex flex-col items-center w-full gap-8">
-        <h1 className="text-9xl md:text-16xl w-full select-none text-center font-black text-neutral-content">
+    <div className="my-12 flex min-h-[70vh] w-full items-center justify-center px-4 text-base-content">
+      <div className="flex w-full flex-col items-center gap-8">
+        <h1 className="md:text-16xl w-full select-none text-center text-9xl font-black text-neutral-content">
           <Emoji symbol="🪹" label="nest" />
           404
         </h1>
-        <p className="text-3xl text-accent-content font-semibold text-center">
+        <p className="text-center text-3xl font-semibold text-accent-content">
           The page you&apos;re looking for doesn&apos;t exist.
         </p>
-        <div className="text-2xl text-accent-content md:px-12 text-center">
+        <div className="text-center text-2xl text-accent-content md:px-12">
           <span>Want this to be your username? </span>
           <Link to="/signup" className="text-accent hover:text-accent-focus">
             Create your LinkNest now.

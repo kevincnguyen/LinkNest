@@ -8,7 +8,7 @@ import FacebookIcon from '../icons/FacebookIcon';
 
 function DisplayIcons({ links }) {
   return (
-    <div className="flex items-center gap-4 mt-2 text-white">
+    <div className="mt-2 flex items-center gap-4 text-white">
       {links.map((link) => (
         <a
           aria-label={`link to ${link.url}`}

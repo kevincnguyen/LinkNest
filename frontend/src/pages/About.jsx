@@ -3,17 +3,13 @@ import Emoji from '../components/Emoji';
 
 function About() {
   return (
-    <div className="flex flex-col justify-center items-center min-w-screen">
-      <div className="card lg:card-side card-bordered w-3/5 mt-8 bg-base-100 shadow-xl">
+    <div className="min-w-screen flex flex-col items-center justify-center">
+      <div className="card card-bordered mt-8 w-3/5 bg-base-100 shadow-xl lg:card-side">
         <figure>
-          <img
-            src={Photo}
-            alt="Kevin"
-            className="w-72"
-          />
+          <img src={Photo} alt="Kevin" className="w-72" />
         </figure>
         <div className="card-body">
-          <h1 className="card-title text-4xl text-accent-content font-bold">
+          <h1 className="card-title text-4xl font-bold text-accent-content">
             About Me
             <Emoji symbol="🐧" label="bear" />
           </h1>
@@ -28,7 +24,10 @@ function About() {
             rel="noopener noreferrer"
             className="card-actions"
           >
-            <button type="button" className="btn btn-block btn-accent font-bold">
+            <button
+              type="button"
+              className="btn btn-accent btn-block font-bold"
+            >
               Connect with me
             </button>
           </a>

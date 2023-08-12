@@ -3,17 +3,13 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'airbnb',
-  ],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -23,6 +19,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  plugins: ['prettier'],
   rules: {
     'linebreak-style': ['error', 'windows'],
     'no-console': ['off'],
@@ -35,5 +32,11 @@ module.exports = {
     'jsx-a11y/no-noninteractive-tabindex': ['off'],
     'jsx-a11y/label-has-associated-control': ['off'],
     'react/jsx-no-constructed-context-values': ['off'],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };

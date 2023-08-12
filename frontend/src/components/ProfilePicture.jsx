@@ -4,10 +4,7 @@ function ProfilePicture({ src }) {
   return (
     <div className="avatar">
       <div className="w-28 rounded-full">
-        <img
-          src={src}
-          alt="Profile Picture"
-        />
+        <img src={src} alt="Profile Picture" />
       </div>
     </div>
   );

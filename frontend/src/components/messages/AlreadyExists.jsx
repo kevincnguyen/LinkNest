@@ -1,19 +1,15 @@
 import PropTypes from 'prop-types';
 
 function AlreadyExists({ user, email }) {
-  const output = user && email ? 'username and email' : email ? 'email' : 'username';
+  const output =
+    user && email ? 'username and email' : email ? 'email' : 'username';
 
   return (
     <>
-      An account already exists with that
-      {' '}
-      {output}
+      An account already exists with that {output}
       .
       <br />
-      Please try a different
-      {' '}
-      {output}
-      .
+      Please try a different {output}.
     </>
   );
 }

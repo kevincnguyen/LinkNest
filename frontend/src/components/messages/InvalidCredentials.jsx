@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 function InvalidCredentials({ login }) {
   return (
     <>
-      Invalid
-      {' '}
-      {login ? 'username or password' : 'inputs'}
+      Invalid {login ? 'username or password' : 'inputs'}
       .
       <br />
       Please try again.

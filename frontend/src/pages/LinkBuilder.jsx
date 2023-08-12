@@ -25,17 +25,22 @@ function LinkBuilder() {
   const [image, setImage] = useState(null);
 
   const updatePositions = async (linksToUpdate) => {
-    const updatedLinks = linksToUpdate.map((link, index) => ({ ...link, position: index }));
-    setLinks(updatedLinks);
-    await Promise.all(updatedLinks.map(async (link, index) => {
-      if (links[index].id !== updatedLinks[index].id) {
-        await linksService.update(
-          updatedLinks[index].id,
-          { position: updatedLinks[index].position },
-          axiosPrivate,
-        );
-      }
+    const updatedLinks = linksToUpdate.map((link, index) => ({
+      ...link,
+      position: index,
     }));
+    setLinks(updatedLinks);
+    await Promise.all(
+      updatedLinks.map(async (link, index) => {
+        if (links[index].id !== updatedLinks[index].id) {
+          await linksService.update(
+            updatedLinks[index].id,
+            { position: updatedLinks[index].position },
+            axiosPrivate,
+          );
+        }
+      }),
+    );
     setAuth({ ...auth, user: { ...auth.user, links: updatedLinks } });
   };
 
@@ -110,8 +115,14 @@ function LinkBuilder() {
 
   const handleSave = async (id, desc, url) => {
     try {
-      const updatedLink = await linksService.update(id, { desc, url }, axiosPrivate);
-      const updatedLinks = links.map((link) => (link.id === id ? updatedLink : link));
+      const updatedLink = await linksService.update(
+        id,
+        { desc, url },
+        axiosPrivate,
+      );
+      const updatedLinks = links.map((link) =>
+        link.id === id ? updatedLink : link,
+      );
       setLinks(updatedLinks);
       setAuth({ ...auth, user: { ...auth.user, links: updatedLinks } });
     } catch (err) {
@@ -141,16 +152,21 @@ function LinkBuilder() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-full bg-base-200">
-      <div className="left-side flex flex-col items-center border-b-2 border-b-base-300 pb-8
-                            md:w-3/5 md:max-w-3/5 md:border-r-2 md:border-r-base-300 md:border-b-0"
+    <div className="flex h-full flex-col bg-base-200 md:flex-row">
+      <div
+        className="left-side md:max-w-3/5 flex flex-col items-center border-b-2 border-b-base-300
+                            pb-8 md:w-3/5 md:border-b-0 md:border-r-2 md:border-r-base-300"
       >
         <AddLinkButton />
         <AddLinkForm handleAdd={handleAdd} />
         <DragDropContext onDragEnd={handleDragEnd}>
           <StrictModeDroppable droppableId="links-list">
             {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef} className="w-3/5">
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="w-3/5"
+              >
                 {links.map((link, index) => (
                   <LinkCard
                     key={link.id}
@@ -166,8 +182,8 @@ function LinkBuilder() {
           </StrictModeDroppable>
         </DragDropContext>
       </div>
-      <div className="right-side flex flex-col items-center md:w-2/5 md:max-w-2/5">
-        <div className="w-3/5 mt-8 mb-10">
+      <div className="right-side md:max-w-2/5 flex flex-col items-center md:w-2/5">
+        <div className="mb-10 mt-8 w-3/5">
           <PreviewContext.Provider
             value={{
               image,

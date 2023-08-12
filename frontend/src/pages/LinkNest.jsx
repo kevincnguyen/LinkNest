@@ -45,7 +45,7 @@ function LinkNest() {
 
   return (
     <div className="h-screen bg-gradient-to-tr from-indigo-200 via-red-200 to-yellow-100">
-      <div className="flex flex-col items-center justify-center mx-auto max-w-2xl w-full pt-16 px-8">
+      <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center px-8 pt-16">
         <ProfilePicture src={profilePicture} />
         <DisplayTitle text={user.title} />
         {user.bio && <DisplayBio text={user.bio} />}
