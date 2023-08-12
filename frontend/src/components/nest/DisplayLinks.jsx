@@ -1,25 +1,24 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import DisplayLink from './DisplayLink';
 
-import DisplayLink from './DisplayLink'
+function DisplayLinks({ links }) {
+  const sortedLinks = links.sort((a, b) => a.position - b.position);
 
-const DisplayLinks = ({ links }) => {
-    const sortedLinks = links.sort((a, b) => a.position - b.position)
-
-    return (
-        <div className='w-full'>
-            {sortedLinks.map(link => (
-                <DisplayLink 
-                    key={link.id}
-                    url={link.url}
-                    desc={link.desc}
-                />
-            ))}
-        </div>
-    )
+  return (
+    <div className="w-full">
+      {sortedLinks.map((link) => (
+        <DisplayLink
+          key={link.id}
+          url={link.url}
+          desc={link.desc}
+        />
+      ))}
+    </div>
+  );
 }
 
 DisplayLinks.propTypes = {
-    links: PropTypes.array
-}
+  links: PropTypes.array,
+};
 
-export default DisplayLinks
+export default DisplayLinks;

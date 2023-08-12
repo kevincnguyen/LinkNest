@@ -1,11 +1,11 @@
-const NoMatchPasswords = () => {
-    return (
-        <>
-            Passwords do not match.
-            <br />
-            Please try again.
-        </>
-    )
+function NoMatchPasswords() {
+  return (
+    <>
+      Passwords do not match.
+      <br />
+      Please try again.
+    </>
+  );
 }
 
-export default NoMatchPasswords
+export default NoMatchPasswords;

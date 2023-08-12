@@ -1,21 +1,20 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const ProfilePicture = ({ src }) => {
-    
-    return (
-        <div className="avatar">
-            <div className="w-28 rounded-full">
-                <img
-                    src={src}
-                    alt='Profile Picture'
-                />
-            </div>
-        </div>
-    )
+function ProfilePicture({ src }) {
+  return (
+    <div className="avatar">
+      <div className="w-28 rounded-full">
+        <img
+          src={src}
+          alt="Profile Picture"
+        />
+      </div>
+    </div>
+  );
 }
 
 ProfilePicture.propTypes = {
-    src: PropTypes.string.isRequired
-}
+  src: PropTypes.string.isRequired,
+};
 
-export default ProfilePicture
+export default ProfilePicture;

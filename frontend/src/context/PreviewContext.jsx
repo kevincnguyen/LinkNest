@@ -1,3 +1,5 @@
-import { createContext } from 'react'
+import { createContext } from 'react';
 
-export const PreviewContext = createContext({})
+const PreviewContext = createContext({});
+
+export default PreviewContext;

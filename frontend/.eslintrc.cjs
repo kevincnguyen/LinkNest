@@ -1,20 +1,39 @@
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-  settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+  env: {
+    browser: true,
+    es2021: true,
   },
-}
+  extends: [
+    'airbnb',
+  ],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: [
+        '.eslintrc.{js,cjs}',
+      ],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  rules: {
+    'linebreak-style': ['error', 'windows'],
+    'no-console': ['off'],
+    'no-nested-ternary': ['off'],
+    'react/forbid-prop-types': ['off'],
+    'react/react-in-jsx-scope': ['off'],
+    'jsx-a11y/img-redundant-alt': ['off'],
+    'react/require-default-props': ['off'],
+    'react/jsx-props-no-spreading': ['off'],
+    'jsx-a11y/no-noninteractive-tabindex': ['off'],
+    'jsx-a11y/label-has-associated-control': ['off'],
+    'react/jsx-no-constructed-context-values': ['off'],
+  },
+};

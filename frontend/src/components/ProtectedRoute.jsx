@@ -1,20 +1,20 @@
-import PropTypes from 'prop-types'
-import { Navigate, useLocation } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import PropTypes from 'prop-types';
+import { Navigate, useLocation } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
-const ProtectedRoute = ({ children }) => {
-    const { auth } = useAuth()
-    const location = useLocation()
+function ProtectedRoute({ children }) {
+  const { auth } = useAuth();
+  const location = useLocation();
 
-    return (
-        auth.user 
-            ? children
-            : <Navigate to='/login' state={{ from: location }} replace />
-    )
+  return (
+    auth.user
+      ? children
+      : <Navigate to="/login" state={{ from: location }} replace />
+  );
 }
 
 ProtectedRoute.propTypes = {
-    children: PropTypes.node
-}
+  children: PropTypes.node,
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

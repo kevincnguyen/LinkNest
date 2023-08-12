@@ -1,23 +1,23 @@
-import { useContext } from "react"
-import { PreviewContext } from "../../context/PreviewContext"
+import { useContext } from 'react';
+import PreviewContext from '../../context/PreviewContext';
 
-import PreviewProfilePicture from './PreviewProfilePicture'
-import PreviewTitle from './PreviewTitle'
-import PreviewBio from './PreviewBio'
-import PreviewLinks from './PreviewLinks'
-import PreviewLogo from './PreviewLogo'
+import PreviewBio from './PreviewBio';
+import PreviewLogo from './PreviewLogo';
+import PreviewLinks from './PreviewLinks';
+import PreviewTitle from './PreviewTitle';
+import PreviewProfilePicture from './PreviewProfilePicture';
 
-const PreviewLinkNest = () => {
-    const {bio, links} = useContext(PreviewContext)
-    return (
-        <>
-            <PreviewProfilePicture />
-            <PreviewTitle />
-            {bio && <PreviewBio />}
-            {links && <PreviewLinks />}
-            <PreviewLogo />
-        </>
-    )
+function PreviewLinkNest() {
+  const { bio, links } = useContext(PreviewContext);
+  return (
+    <>
+      <PreviewProfilePicture />
+      <PreviewTitle />
+      {bio && <PreviewBio />}
+      {links && <PreviewLinks />}
+      <PreviewLogo />
+    </>
+  );
 }
 
-export default PreviewLinkNest
+export default PreviewLinkNest;

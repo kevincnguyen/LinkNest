@@ -1,14 +1,13 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom';
+import HomeNavBar from '../nav/HomeNavBar';
 
-import HomeNavBar from '../nav/HomeNavBar'
-
-const HomeLayout = () => {
-    return (
-        <>
-            <HomeNavBar />
-            <Outlet />
-        </>
-    )
+function HomeLayout() {
+  return (
+    <>
+      <HomeNavBar />
+      <Outlet />
+    </>
+  );
 }
 
-export default HomeLayout
+export default HomeLayout;

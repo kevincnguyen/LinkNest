@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Droppable } from "react-beautiful-dnd";
+import { useEffect, useState } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
 // eslint-disable-next-line react/prop-types
-export const StrictModeDroppable = ({ children, ...props }) => {
+function StrictModeDroppable({ children, ...props }) {
   const [enabled, setEnabled] = useState(false);
-  
+
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
     return () => {
@@ -12,10 +12,12 @@ export const StrictModeDroppable = ({ children, ...props }) => {
       setEnabled(false);
     };
   }, []);
-  
+
   if (!enabled) {
     return null;
   }
 
   return <Droppable {...props}>{children}</Droppable>;
-};
+}
+
+export default StrictModeDroppable;
