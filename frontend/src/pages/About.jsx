@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Photo from '../assets/kevin.jpg';
 import Emoji from '../components/Emoji';
 
@@ -36,6 +36,6 @@ function About() {
       </div>
     </div>
   );
-};
+}
 
 export default About;
