@@ -17,7 +17,7 @@ const logoutRouter = require('./controllers/logout');
 const signupRouter = require('./controllers/signup');
 const refreshRouter = require('./controllers/refresh');
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(express.static('dist'));
 app.use(cookieParser());
