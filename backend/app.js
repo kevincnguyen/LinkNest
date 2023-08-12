@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 
 const app = express();
@@ -38,6 +39,10 @@ app.use('/api/login', loginRouter);
 app.use('/api/logout', logoutRouter);
 app.use('/api/signup', signupRouter);
 app.use('/api/refresh', refreshRouter);
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
