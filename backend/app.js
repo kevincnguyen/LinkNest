@@ -19,7 +19,7 @@ const refreshRouter = require('./controllers/refresh');
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
-app.use(express.static('build'));
+app.use(express.static('dist'));
 app.use(cookieParser());
 app.use(middleware.requestLogger);
 
