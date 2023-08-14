@@ -20,9 +20,11 @@ const update = async (id, updatedUser, axiosPrivate) => {
 };
 
 const upload = async (id, updatedUser, axiosPrivate) => {
-  // eslint-disable-next-line no-param-reassign
+  /* eslint-disable no-param-reassign */
   axiosPrivate.defaults.headers['Content-Type'] = 'multipart/form-data';
   const response = await axiosPrivate.put(`${baseUrl}/${id}`, updatedUser);
+  axiosPrivate.defaults.headers['Content-Type'] = 'application/json';
+  /* eslint-disable no-param-reassign */
   return response.data;
 };
 
