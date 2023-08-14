@@ -21,7 +21,7 @@ function Login() {
     try {
       const { user, accessToken } = await loginService.login(
         {
-          username,
+          username: username.toLowerCase(),
           password,
         },
         axiosPrivate,

@@ -44,13 +44,13 @@ function Signup() {
       } else {
         await signupService.signup({
           name,
-          username,
-          email,
+          username: username.toLowerCase(),
+          email: email.toLowerCase(),
           password,
         });
         const { user, accessToken } = await loginService.login(
           {
-            username,
+            username: username.toLowerCase(),
             password,
           },
           axiosPrivate,
