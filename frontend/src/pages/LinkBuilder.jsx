@@ -157,6 +157,32 @@ function LinkBuilder() {
         className="left-side md:max-w-3/5 flex flex-col items-center border-b-2 border-b-base-300
                             pb-8 md:w-3/5 md:border-b-0 md:border-r-2 md:border-r-base-300"
       >
+        <div className="stats mt-8 flex w-11/12 items-center justify-center shadow">
+          <div className="stat flex justify-between">
+            <div>
+              <div className="stat-title">Your LinkNest is live:</div>
+              <a
+                href={`https://linknest.onrender.com/${auth.user.username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-accent"
+              >
+                {`https://linknest.onrender.com/${auth.user.username}`}
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  `https://linknest.onrender.com/${auth.user.username}`,
+                )
+              }
+              className="btn btn-accent btn-md"
+            >
+              Copy URL
+            </button>
+          </div>
+        </div>
         <AddLinkButton />
         <AddLinkForm handleAdd={handleAdd} />
         <DragDropContext onDragEnd={handleDragEnd}>
