@@ -4,11 +4,11 @@
 
 https://linknest.onrender.com/
 
-![LinkNest_Demo](https://github.com/kevincnguyen/LinkNest/assets/68757183/7d2d15dc-d46e-4cf1-b1e9-2b978d4e49cf)
+![LinkNestDemo](https://github.com/kevincnguyen/LinkNest/assets/68757183/99d0e3b2-ca86-4959-accb-ccd5cdb4ce0f)
 
-## :hatching_chick: Demo
+## :hatching_chick: Video Demo
 
-https://www.youtube.com/watch?v=Q8zekBfQpMQ
+[https://www.youtube.com/watch?v=Q8zekBfQpMQ](https://youtu.be/r_a6vgxQnN4)
 
 ## :hatched_chick: Features
 
