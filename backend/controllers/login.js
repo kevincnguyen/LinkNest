@@ -16,7 +16,7 @@ loginRouter.post('/', async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username: username.toLowerCase() })
     .populate('links', {
       id: 1, url: 1, desc: 1, position: 1,
     });

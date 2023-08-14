@@ -10,7 +10,7 @@ const middleware = require('../utils/middleware');
 // @route GET /api/users/:username
 // @access Public
 usersRouter.get('/:username', async (req, res) => {
-  const user = await User.findOne({ username: req.params.username })
+  const user = await User.findOne({ username: req.params.username.toLowerCase() })
     .populate('links', {
       id: 1, url: 1, desc: 1, position: 1,
     });
@@ -26,7 +26,7 @@ usersRouter.get('/:username', async (req, res) => {
 // @route GET /api/users/:username/image
 // @access Public
 usersRouter.get('/:username/image', async (req, res) => {
-  const user = await User.findOne({ username: req.params.username });
+  const user = await User.findOne({ username: req.params.username.toLowerCase() });
   if (!user) {
     return res.status(404).json({
       error: 'User not found',
