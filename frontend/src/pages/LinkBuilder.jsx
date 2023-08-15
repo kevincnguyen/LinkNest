@@ -97,7 +97,7 @@ function LinkBuilder() {
 
   const handleAdd = async (desc, url) => {
     try {
-      const linkUrl = url.startsWith('http://') ? url : `http://${url}`;
+      const linkUrl = url.startsWith('http') ? url : `http://${url}`;
       const newLink = {
         url: linkUrl,
         desc,
